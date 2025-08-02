@@ -26,8 +26,10 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
           id: 'single',
           name: 'Single Visit Package',
           price: 799,
-          originalPrice: 999,
+          originalPrice: 799, // No discount for single visit
           visits: 1,
+          validity: 'One-time use',
+          description: 'One-time hospital visit assistance',
           features: [
             'Door-to-door companion service',
             'In-clinic support & advocacy',
@@ -36,7 +38,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
             'Family updates via WhatsApp'
           ],
           popular: false,
-          savings: 200
+          savings: 0 // No savings for single visit
         },
         {
           id: 'weekly',
@@ -44,6 +46,8 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
           price: 2800,
           originalPrice: 3196,
           visits: 4,
+          validity: '30 days from purchase',
+          description: '4 hospital visits within a month',
           pricePerVisit: 700,
           features: [
             'All Single Visit features',
@@ -57,18 +61,19 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
         },
         {
           id: 'monthly',
-          name: 'Complete Monthly Care',
+          name: 'Monthly Complete Care Package',
           price: 4500,
           originalPrice: 6392,
           visits: 8,
+          validity: '30 days from purchase',
+          description: '8 hospital visits + priority scheduling',
           pricePerVisit: 562.50,
           features: [
             'All Weekly Package features',
             'Same companion preference',
-            'Quarterly doctor consultation',
+            'Priority booking included',
             'Medicine delivery assistance',
-            'Emergency support helpline',
-            'Priority booking'
+            'Emergency support helpline'
           ],
           popular: false,
           savings: 1892
@@ -87,7 +92,9 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
       totalAmount: plan.price,
       visits: plan.visits,
       originalPrice: plan.originalPrice,
-      savings: plan.savings
+      savings: plan.savings,
+      validity: plan.validity,
+      description: plan.description
     });
   };
 
@@ -133,6 +140,8 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
                 {plan.visits > 1 && (
                   <p className="text-sm text-gray-600">{plan.visits} visits</p>
                 )}
+                <p className="text-xs text-gray-500 mt-1">{plan.description}</p>
+                <p className="text-xs text-gray-500">Validity: {plan.validity}</p>
               </div>
               {plan.popular && (
                 <span className="bg-primary text-white text-xs px-2 py-1 rounded-full flex items-center">
@@ -197,9 +206,10 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
         <h4 className="font-medium text-yellow-900 mb-2">Package Benefits</h4>
         <ul className="text-sm text-yellow-800 space-y-1">
           <li>• Multi-visit packages offer significant savings</li>
-          <li>• Packages are valid for 12 months from purchase</li>
-          <li>• Free rescheduling with 6+ visit packages</li>
-          <li>• Priority booking for package customers</li>
+          <li>• Weekly and Monthly packages valid for 30 days from purchase</li>
+          <li>• Free rescheduling with Weekly Care Package</li>
+          <li>• Priority booking included with Monthly Complete Care Package</li>
+          <li>• All prices subject to 18% GST</li>
         </ul>
       </div>
 

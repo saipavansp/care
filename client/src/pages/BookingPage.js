@@ -52,11 +52,13 @@ const BookingPage = () => {
     packageId: 'single',
     packageName: 'Single Visit Package',
     visits: 1,
+    validity: 'One-time use',
+    description: 'One-time hospital visit assistance',
     
     // Pricing
     totalAmount: 799,
-    originalPrice: 999,
-    savings: 200
+    originalPrice: 799,
+    savings: 0
   });
 
   const steps = [
