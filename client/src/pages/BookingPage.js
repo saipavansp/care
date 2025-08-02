@@ -50,21 +50,21 @@ const BookingPage = () => {
     
     // Package Details
     packageId: 'single',
-    packageName: 'Single Visit',
+    packageName: 'Single Visit Package',
     visits: 1,
     
     // Pricing
     totalAmount: 799,
     originalPrice: 999,
-    savings: 0
+    savings: 200
   });
 
   const steps = [
     { number: 1, title: 'Patient Details' },
     { number: 2, title: 'Appointment' },
     { number: 3, title: 'Pickup Location' },
-    { number: 4, title: 'Preferences' },
-    { number: 5, title: 'Select Package' },
+    { number: 4, title: 'Select Package' },
+    { number: 5, title: 'Preferences' },
     { number: 6, title: 'Review & Pay' }
   ];
 
@@ -73,7 +73,7 @@ const BookingPage = () => {
   };
 
   const handleNext = () => {
-    if (currentStep < 5) {
+    if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -159,7 +159,7 @@ const BookingPage = () => {
         );
       case 4:
         return (
-          <PreferencesStep
+          <PackageSelectionStep
             data={bookingData}
             updateData={updateBookingData}
             onNext={handleNext}
@@ -168,7 +168,7 @@ const BookingPage = () => {
         );
       case 5:
         return (
-          <PackageSelectionStep
+          <PreferencesStep
             data={bookingData}
             updateData={updateBookingData}
             onNext={handleNext}

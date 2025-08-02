@@ -24,7 +24,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
       setPlans([
         {
           id: 'single',
-          name: 'Single Visit',
+          name: 'Single Visit Package',
           price: 799,
           originalPrice: 999,
           visits: 1,
@@ -36,15 +36,15 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
             'Family updates via WhatsApp'
           ],
           popular: false,
-          savings: null
+          savings: 200
         },
         {
-          id: 'pack6',
-          name: '6 Visit Package',
-          price: 4499,
-          originalPrice: 5994,
-          visits: 6,
-          pricePerVisit: 750,
+          id: 'weekly',
+          name: 'Weekly Care Package',
+          price: 2800,
+          originalPrice: 3196,
+          visits: 4,
+          pricePerVisit: 700,
           features: [
             'All Single Visit features',
             'Priority companion assignment',
@@ -53,41 +53,25 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
             'Free rescheduling'
           ],
           popular: true,
-          savings: 1495
+          savings: 396
         },
         {
-          id: 'pack12',
-          name: '12 Visit Package',
-          price: 8499,
-          originalPrice: 11988,
-          visits: 12,
-          pricePerVisit: 708,
+          id: 'monthly',
+          name: 'Complete Monthly Care',
+          price: 4500,
+          originalPrice: 6392,
+          visits: 8,
+          pricePerVisit: 562.50,
           features: [
-            'All 6 Visit Package features',
+            'All Weekly Package features',
             'Same companion preference',
             'Quarterly doctor consultation',
             'Medicine delivery assistance',
-            'Emergency support helpline'
+            'Emergency support helpline',
+            'Priority booking'
           ],
           popular: false,
-          savings: 3489
-        },
-        {
-          id: 'pack24',
-          name: '24 Visit Package',
-          price: 15999,
-          originalPrice: 23976,
-          visits: 24,
-          pricePerVisit: 667,
-          features: [
-            'All 12 Visit Package features',
-            'Dedicated companion team',
-            'Home health checkups',
-            'Annual health assessment',
-            'VIP support & priority booking'
-          ],
-          popular: false,
-          savings: 7977
+          savings: 1892
         }
       ]);
     } finally {
