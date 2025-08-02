@@ -89,7 +89,7 @@ Thumbs.db
 
 # Gatsby files
 .cache/
-public
+# public - commenting out to allow client/public folder
 
 # Next.js
 .next/
