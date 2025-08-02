@@ -66,13 +66,41 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
+      console.log('Register function called with:', userData);
       const data = await authService.register(userData);
+      console.log('Registration response:', data);
       setUser(data.user);
       setIsAuthenticated(true);
       toast.success('Registration successful!');
       return { success: true, data };
     } catch (error) {
-      return { success: false, error: error.response?.data?.message || 'Registration failed' };
+      console.error('Registration error in context:', error);
+      
+      // Provide more specific error messages based on the error
+      let errorMessage = 'Registration failed';
+      
+      if (error.response) {
+        console.error('Error response in context:', error.response.data);
+        // Handle specific error cases
+        if (error.response.status === 400) {
+          if (error.response.data.message.includes('already exists')) {
+            errorMessage = 'This phone number is already registered. Please login instead.';
+          } else if (error.response.data.message.includes('validation')) {
+            errorMessage = 'Please check your information and try again.';
+          } else {
+            errorMessage = error.response.data.message || 'Invalid registration data';
+          }
+        } else if (error.response.status === 429) {
+          errorMessage = 'Too many attempts. Please try again later.';
+        } else if (error.response.status >= 500) {
+          errorMessage = 'Server error. Please try again later.';
+        }
+      } else if (error.message.includes('timeout') || error.message.includes('aborted')) {
+        errorMessage = 'Request timed out. The server might be busy, please try again.';
+      }
+      
+      toast.error(errorMessage);
+      return { success: false, error: errorMessage };
     }
   };
 
