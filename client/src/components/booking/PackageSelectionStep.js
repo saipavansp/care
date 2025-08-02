@@ -20,6 +20,76 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
       setPlans(response.plans);
     } catch (error) {
       console.error('Error fetching pricing plans:', error);
+      // Fallback pricing plans if API fails
+      setPlans([
+        {
+          id: 'single',
+          name: 'Single Visit',
+          price: 799,
+          originalPrice: 999,
+          visits: 1,
+          features: [
+            'Door-to-door companion service',
+            'In-clinic support & advocacy',
+            'Digital visit summary',
+            'Medicine reminders',
+            'Family updates via WhatsApp'
+          ],
+          popular: false,
+          savings: null
+        },
+        {
+          id: 'pack6',
+          name: '6 Visit Package',
+          price: 4499,
+          originalPrice: 5994,
+          visits: 6,
+          pricePerVisit: 750,
+          features: [
+            'All Single Visit features',
+            'Priority companion assignment',
+            'Dedicated care coordinator',
+            'Monthly health report',
+            'Free rescheduling'
+          ],
+          popular: true,
+          savings: 1495
+        },
+        {
+          id: 'pack12',
+          name: '12 Visit Package',
+          price: 8499,
+          originalPrice: 11988,
+          visits: 12,
+          pricePerVisit: 708,
+          features: [
+            'All 6 Visit Package features',
+            'Same companion preference',
+            'Quarterly doctor consultation',
+            'Medicine delivery assistance',
+            'Emergency support helpline'
+          ],
+          popular: false,
+          savings: 3489
+        },
+        {
+          id: 'pack24',
+          name: '24 Visit Package',
+          price: 15999,
+          originalPrice: 23976,
+          visits: 24,
+          pricePerVisit: 667,
+          features: [
+            'All 12 Visit Package features',
+            'Dedicated companion team',
+            'Home health checkups',
+            'Annual health assessment',
+            'VIP support & priority booking'
+          ],
+          popular: false,
+          savings: 7977
+        }
+      ]);
     } finally {
       setIsLoading(false);
     }

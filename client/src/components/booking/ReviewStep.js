@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiArrowLeft, FiCheck, FiEdit2, FiUser } from 'react-icons/fi';
+import { FiArrowLeft, FiCheck, FiEdit2, FiUser, FiAlertCircle } from 'react-icons/fi';
 import { formatDate, formatCurrency } from '../../utils/helpers';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated }) => {
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showTermsError, setShowTermsError] = useState(false);
+  
+  const handleSubmit = () => {
+    if (!termsAccepted) {
+      setShowTermsError(true);
+      toast.error('Please accept the terms and conditions');
+      return;
+    }
+    onSubmit();
+  };
   const sections = [
     {
       title: 'Patient Information',
@@ -152,17 +164,32 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
             </div>
           </div>
         ) : (
-          <div className="flex items-start space-x-3">
-            <input
-              type="checkbox"
-              id="terms"
-              required
-              className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-            />
-            <label htmlFor="terms" className="text-sm text-gray-700">
-              I confirm that all the information provided is accurate and I agree to the 
-              booking terms and conditions
-            </label>
+          <div className="space-y-3">
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={termsAccepted}
+                onChange={(e) => {
+                  setTermsAccepted(e.target.checked);
+                  if (e.target.checked) setShowTermsError(false);
+                }}
+                className={`mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded ${
+                  showTermsError ? 'border-red-500 ring-1 ring-red-500' : ''
+                }`}
+              />
+              <label htmlFor="terms" className="text-sm text-gray-700">
+                I confirm that all the information provided is accurate and I agree to the 
+                booking terms and conditions
+              </label>
+            </div>
+            
+            {showTermsError && (
+              <div className="flex items-center text-red-500 text-sm">
+                <FiAlertCircle className="mr-1" />
+                <span>You must accept the terms and conditions to proceed</span>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -181,7 +208,7 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
         
         {isAuthenticated && (
           <button
-            onClick={onSubmit}
+            onClick={handleSubmit}
             disabled={isSubmitting}
             className="btn-primary inline-flex items-center min-w-[150px] justify-center"
           >
