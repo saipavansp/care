@@ -42,12 +42,24 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
+      console.log('Login attempt with:', credentials);
       const data = await authService.login(credentials);
+      console.log('Login response:', data);
       setUser(data.user);
       setIsAuthenticated(true);
       toast.success('Login successful!');
       return { success: true, data };
     } catch (error) {
+      console.error('Login error:', error);
+      // Add more detailed error logging
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        console.error('Error status:', error.response.status);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+      }
       return { success: false, error: error.response?.data?.message || 'Login failed' };
     }
   };

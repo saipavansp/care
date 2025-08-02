@@ -26,25 +26,41 @@ const LoginPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
-    // Add login type to the data
-    const loginData = { ...data, loginType };
-    
-    const result = await login(loginData);
-    setIsLoading(false);
+    try {
+      console.log('Form submitted with data:', data);
+      setIsLoading(true);
+      // Add login type to the data
+      const loginData = { ...data, loginType };
+      console.log('Calling login with data:', loginData);
+      
+      const result = await login(loginData);
+      console.log('Login result:', result);
+      setIsLoading(false);
 
-    if (result.success) {
-      // Check if there's a pending booking to restore
-      const bookingReturnUrl = localStorage.getItem('bookingReturnUrl');
-      if (bookingReturnUrl && result.data.user.role === 'user') {
-        navigate(bookingReturnUrl);
+      if (result.success) {
+        console.log('Login successful, navigating to:', from);
+        // Check if there's a pending booking to restore
+        const bookingReturnUrl = localStorage.getItem('bookingReturnUrl');
+        if (bookingReturnUrl && result.data.user.role === 'user') {
+          console.log('Navigating to booking return URL:', bookingReturnUrl);
+          navigate(bookingReturnUrl);
+        } else {
+          console.log('Navigating to:', from);
+          navigate(from, { replace: true });
+        }
       } else {
-        navigate(from, { replace: true });
+        console.error('Login failed:', result.error);
+        setError('root', {
+          type: 'manual',
+          message: result.error
+        });
       }
-    } else {
+    } catch (error) {
+      console.error('Error in login submit handler:', error);
+      setIsLoading(false);
       setError('root', {
         type: 'manual',
-        message: result.error
+        message: 'An unexpected error occurred. Please try again.'
       });
     }
   };

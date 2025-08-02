@@ -13,19 +13,30 @@ const authService = {
 
   // Login user
   login: async (credentials) => {
-    // Determine the login endpoint based on login type
-    const endpoint = credentials.loginType === 'companion' 
-      ? '/auth/companion/login' 
-      : '/auth/login';
-    
-    const { loginType, ...loginData } = credentials; // Remove loginType from data sent to API
-    const response = await api.post(endpoint, loginData);
-    
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+    try {
+      // Determine the login endpoint based on login type
+      const endpoint = credentials.loginType === 'companion' 
+        ? '/auth/companion/login' 
+        : '/auth/login';
+      
+      console.log('Login endpoint:', endpoint);
+      console.log('API base URL:', api.defaults.baseURL);
+      
+      const { loginType, ...loginData } = credentials; // Remove loginType from data sent to API
+      console.log('Sending login data:', loginData);
+      
+      const response = await api.post(endpoint, loginData);
+      console.log('Raw login response:', response);
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      console.error('Error in auth service login:', error);
+      throw error;
     }
-    return response.data;
   },
 
   // Logout user
