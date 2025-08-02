@@ -80,13 +80,28 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
           <h3 className="font-semibold text-gray-900 mb-4">Pricing Details</h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-gray-700">Companion Service</span>
+              <span className="text-gray-700">{data.packageName} ({data.visits} {data.visits > 1 ? 'visits' : 'visit'})</span>
               <span className="font-medium">{formatCurrency(data.totalAmount)}</span>
             </div>
+            
+            {data.originalPrice && data.originalPrice > data.totalAmount && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-green-700">Package Savings</span>
+                <span className="font-medium text-green-700">-{formatCurrency(data.originalPrice - data.totalAmount)}</span>
+              </div>
+            )}
+            
             <div className="border-t pt-3">
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-900">Total Amount</span>
-                <span className="text-xl font-bold text-primary">{formatCurrency(data.totalAmount)}</span>
+                <div className="text-right">
+                  {data.originalPrice && data.originalPrice > data.totalAmount && (
+                    <div className="text-sm text-gray-500 line-through">
+                      {formatCurrency(data.originalPrice)}
+                    </div>
+                  )}
+                  <span className="text-xl font-bold text-primary">{formatCurrency(data.totalAmount)}</span>
+                </div>
               </div>
             </div>
           </div>

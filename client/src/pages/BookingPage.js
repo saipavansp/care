@@ -8,6 +8,7 @@ import PatientDetailsStep from '../components/booking/PatientDetailsStep';
 import AppointmentDetailsStep from '../components/booking/AppointmentDetailsStep';
 import PickupLocationStep from '../components/booking/PickupLocationStep';
 import PreferencesStep from '../components/booking/PreferencesStep';
+import PackageSelectionStep from '../components/booking/PackageSelectionStep';
 import ReviewStep from '../components/booking/ReviewStep';
 import bookingService from '../services/booking';
 import toast from 'react-hot-toast';
@@ -47,8 +48,15 @@ const BookingPage = () => {
     preferredLanguage: 'Hindi',
     specialRequirements: '',
     
+    // Package Details
+    packageId: 'single',
+    packageName: 'Single Visit',
+    visits: 1,
+    
     // Pricing
-    totalAmount: 799
+    totalAmount: 799,
+    originalPrice: 999,
+    savings: 0
   });
 
   const steps = [
@@ -56,7 +64,8 @@ const BookingPage = () => {
     { number: 2, title: 'Appointment' },
     { number: 3, title: 'Pickup Location' },
     { number: 4, title: 'Preferences' },
-    { number: 5, title: 'Review & Pay' }
+    { number: 5, title: 'Select Package' },
+    { number: 6, title: 'Review & Pay' }
   ];
 
   const updateBookingData = (data) => {
@@ -158,6 +167,15 @@ const BookingPage = () => {
           />
         );
       case 5:
+        return (
+          <PackageSelectionStep
+            data={bookingData}
+            updateData={updateBookingData}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
+        );
+      case 6:
         return (
           <ReviewStep
             data={bookingData}
