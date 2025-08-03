@@ -3,6 +3,13 @@ import toast from 'react-hot-toast';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api';
 
+// List of allowed frontend domains
+const ALLOWED_DOMAINS = [
+  'https://www.kinpin.in',
+  'https://kinpin.in',
+  'https://carecap.vercel.app'
+];
+
 // Create axios instance
 const api = axios.create({
   baseURL: API_URL,

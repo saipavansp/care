@@ -30,6 +30,8 @@ app.use(cors({
       'http://localhost:3000',
       'http://localhost:3001',
       'https://carecap.vercel.app',
+      'https://www.kinpin.in',
+      'https://kinpin.in',
       process.env.CLIENT_URL
     ];
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {

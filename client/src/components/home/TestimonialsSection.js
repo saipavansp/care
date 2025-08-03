@@ -6,35 +6,31 @@ const TestimonialsSection = () => {
   const TESTIMONIALS = [
     {
       id: 1,
-      name: 'Ravi Kiran',
+      name: 'Ravi K.',
       role: 'Son (Hyderabad)',
       content: 'Kinpin has been a blessing for our family. My father needed regular visits to KIMS for his cardiac checkups. The companion was very professional, helped with all paperwork, and kept me updated throughout.',
-      rating: 5,
-      image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
+      rating: 5
     },
     {
       id: 2,
-      name: 'Lakshmi Devi',
+      name: 'Lakshmi D.',
       role: 'Daughter (Vijayawada)',
       content: 'Working in IT, I couldn\'t accompany my mother to her appointments. Kinpin not only helped with the hospital visit but also explained the prescription in simple Telugu terms. They even helped get the medicines. Excellent service!',
-      rating: 5,
-      image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
+      rating: 5
     },
     {
       id: 3,
-      name: 'Venkat Rao',
+      name: 'Venkat R.',
       role: 'Patient (Warangal)',
       content: 'At 68 years old, visiting hospitals alone was becoming difficult. Kinpin made it so easy with their door-to-door service. Their companion was respectful and patient throughout my treatment at Yashoda Hospital.',
-      rating: 5,
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
+      rating: 5
     },
     {
       id: 4,
-      name: 'Srinivas Reddy',
+      name: 'Srinivas R.',
       role: 'Son (Hyderabad)',
       content: 'My parents live in Hyderabad while I work in Bangalore. Kinpin ensures they never miss their appointments at Apollo Hospital. The digital reports help me stay updated about their health. Truly reliable service!',
-      rating: 5,
-      image: 'https://images.unsplash.com/photo-1582896911227-c966f6e7fb93?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
+      rating: 5
     }
   ];
 
@@ -97,13 +93,8 @@ const TestimonialsSection = () => {
                 </blockquote>
 
                 {/* Author */}
-                <div className="flex items-center justify-center space-x-4">
-                  <img
-                    src={TESTIMONIALS[currentIndex].image}
-                    alt={TESTIMONIALS[currentIndex].name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div className="text-left">
+                <div className="flex items-center justify-center">
+                  <div className="text-center">
                     <p className="font-semibold text-gray-900">
                       {TESTIMONIALS[currentIndex].name}
                     </p>
