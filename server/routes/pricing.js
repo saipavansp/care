@@ -4,10 +4,12 @@ const router = express.Router();
 const pricingPlans = [
   {
     id: 'single',
-    name: 'Single Visit',
+    name: 'Single Visit Package',
     price: 799,
-    originalPrice: 999,
+    originalPrice: 799, // No discount for single visit
     visits: 1,
+    validity: 'One-time use',
+    description: 'One-time hospital visit assistance',
     features: [
       'Door-to-door companion service',
       'In-clinic support & advocacy',
@@ -16,15 +18,17 @@ const pricingPlans = [
       'Family updates via WhatsApp'
     ],
     popular: false,
-    savings: null
+    savings: 0 // No savings for single visit
   },
   {
-    id: 'pack6',
-    name: '6 Visit Package',
-    price: 4499,
-    originalPrice: 5994,
-    visits: 6,
-    pricePerVisit: 750,
+    id: 'weekly',
+    name: 'Weekly Care Package',
+    price: 2800,
+    originalPrice: 3196,
+    visits: 4,
+    validity: '30 days from purchase',
+    description: '4 hospital visits within a month',
+    pricePerVisit: 700,
     features: [
       'All Single Visit features',
       'Priority companion assignment',
@@ -33,41 +37,26 @@ const pricingPlans = [
       'Free rescheduling'
     ],
     popular: true,
-    savings: 1495
+    savings: 396
   },
   {
-    id: 'pack12',
-    name: '12 Visit Package',
-    price: 8499,
-    originalPrice: 11988,
-    visits: 12,
-    pricePerVisit: 708,
+    id: 'monthly',
+    name: 'Monthly Complete Care Package',
+    price: 4500,
+    originalPrice: 6392,
+    visits: 8,
+    validity: '30 days from purchase',
+    description: '8 hospital visits + priority scheduling',
+    pricePerVisit: 562.50,
     features: [
-      'All 6 Visit Package features',
+      'All Weekly Package features',
       'Same companion preference',
-      'Quarterly doctor consultation',
+      'Priority booking included',
       'Medicine delivery assistance',
       'Emergency support helpline'
     ],
     popular: false,
-    savings: 3489
-  },
-  {
-    id: 'pack24',
-    name: '24 Visit Package',
-    price: 15999,
-    originalPrice: 23976,
-    visits: 24,
-    pricePerVisit: 667,
-    features: [
-      'All 12 Visit Package features',
-      'Dedicated companion team',
-      'Home health checkups',
-      'Annual health assessment',
-      'VIP support & priority booking'
-    ],
-    popular: false,
-    savings: 7977
+    savings: 1892
   }
 ];
 
@@ -104,15 +93,12 @@ router.post('/calculate', (req, res) => {
     let discount = 0;
 
     // Apply bulk discounts
-    if (visits >= 24) {
-      basePrice = 667;
-      discount = 0.33;
-    } else if (visits >= 12) {
-      basePrice = 708;
-      discount = 0.29;
-    } else if (visits >= 6) {
-      basePrice = 750;
-      discount = 0.25;
+    if (visits >= 8) {
+      basePrice = 562.50;
+      discount = 0.30;
+    } else if (visits >= 4) {
+      basePrice = 700;
+      discount = 0.12;
     }
 
     const subtotal = basePrice * visits;
