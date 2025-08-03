@@ -6,35 +6,35 @@ const TestimonialsSection = () => {
   const TESTIMONIALS = [
     {
       id: 1,
-      name: 'Priya Sharma',
-      role: 'Daughter (Delhi)',
-      content: 'Care Companion has been a blessing for our family. My mother needed regular visits to AIIMS for her cardiac checkups. The companion spoke fluent Hindi, helped with all paperwork, and sent me updates throughout. माँ बहुत खुश हैं!',
+      name: 'Ravi Kiran',
+      role: 'Son (Hyderabad)',
+      content: 'Kinpin has been a blessing for our family. My father needed regular visits to KIMS for his cardiac checkups. The companion was very professional, helped with all paperwork, and kept me updated throughout.',
+      rating: 5,
+      image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
+    },
+    {
+      id: 2,
+      name: 'Lakshmi Devi',
+      role: 'Daughter (Vijayawada)',
+      content: 'Working in IT, I couldn\'t accompany my mother to her appointments. Kinpin not only helped with the hospital visit but also explained the prescription in simple Telugu terms. They even helped get the medicines. Excellent service!',
       rating: 5,
       image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
     },
     {
-      id: 2,
-      name: 'Rajesh Kumar',
-      role: 'Son (Mumbai)',
-      content: 'Working in IT, I couldn\'t accompany my father to Kokilaben Hospital. The companion not only helped with the doctor visit but also explained the prescription in simple terms. They even helped get the medicines. Excellent service!',
+      id: 3,
+      name: 'Venkat Rao',
+      role: 'Patient (Warangal)',
+      content: 'At 68 years old, visiting hospitals alone was becoming difficult. Kinpin made it so easy with their door-to-door service. Their companion was respectful and patient throughout my treatment at Yashoda Hospital.',
       rating: 5,
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
     },
     {
-      id: 3,
-      name: 'Anita Patel',
-      role: 'Patient (Ahmedabad)',
-      content: 'मैं 72 साल की हूँ और अकेली रहती हूँ। Care Companion की वजह से मुझे अस्पताल जाने में कोई परेशानी नहीं होती। They treat me like family and handle everything professionally.',
+      id: 4,
+      name: 'Srinivas Reddy',
+      role: 'Son (Hyderabad)',
+      content: 'My parents live in Hyderabad while I work in Bangalore. Kinpin ensures they never miss their appointments at Apollo Hospital. The digital reports help me stay updated about their health. Truly reliable service!',
       rating: 5,
       image: 'https://images.unsplash.com/photo-1582896911227-c966f6e7fb93?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
-    },
-    {
-      id: 4,
-      name: 'Suresh Reddy',
-      role: 'Son (Hyderabad)',
-      content: 'My parents live in Hyderabad while I work in the US. Care Companion ensures they never miss their appointments at Apollo Hospital. The digital reports help me stay updated about their health. Truly reliable service!',
-      rating: 5,
-      image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
     }
   ];
 
@@ -58,10 +58,10 @@ const TestimonialsSection = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
-            What Indian Families Say
+            What Our Clients Say
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Real stories from families across India who trust us with their parents' healthcare
+            Real stories from families across Telangana and Andhra Pradesh who trust us with their healthcare needs
           </p>
         </motion.div>
 
@@ -157,20 +157,20 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <p className="text-gray-600 mb-4">Trusted by families across India</p>
+          <p className="text-gray-600 mb-4">Trusted by families across Telangana and Andhra Pradesh</p>
           <div className="flex flex-wrap justify-center gap-8 items-center">
             <div className="text-center">
               <p className="text-3xl font-bold text-primary">500+</p>
-              <p className="text-sm text-gray-600">Indian Families</p>
+              <p className="text-sm text-gray-600">Happy Clients</p>
             </div>
-            <div className="text-center">
+            {/* <div className="text-center">
               <p className="text-3xl font-bold text-primary">15+</p>
               <p className="text-sm text-gray-600">Cities Covered</p>
             </div>
             <div className="text-center">
               <p className="text-3xl font-bold text-primary">8+</p>
               <p className="text-sm text-gray-600">Regional Languages</p>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>

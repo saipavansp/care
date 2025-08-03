@@ -36,10 +36,10 @@ const Header = () => {
             className="flex items-center space-x-2"
           >
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white text-xl font-bold">CC</span>
+              <span className="text-white text-xl font-bold">KP</span>
             </div>
             <span className="text-xl font-heading font-semibold text-gray-800">
-              Care Companion
+              Kinpin
             </span>
           </Link>
 

@@ -43,9 +43,9 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white text-xl font-bold">CC</span>
+                <span className="text-white text-xl font-bold">KP</span>
               </div>
-              <span className="text-xl font-heading font-semibold">Care Companion</span>
+              <span className="text-xl font-heading font-semibold">Kinpin</span>
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
               Your trusted healthcare companion for every hospital visit. Professional support, 
@@ -60,11 +60,11 @@ const Footer = () => {
                 <span>+91 9876543210</span>
               </a>
               <a 
-                href="mailto:support@carecompanion.in" 
+                href="mailto:support@kinpin.in" 
                 className="flex items-center space-x-2 text-gray-400 hover:text-primary transition-colors"
               >
                 <FiMail className="w-4 h-4" />
-                <span>support@carecompanion.in</span>
+                <span>support@kinpin.in</span>
               </a>
               <div className="flex items-center space-x-2 text-gray-400">
                 <FiMapPin className="w-4 h-4" />
@@ -151,7 +151,7 @@ const Footer = () => {
         <div className="max-width-container section-padding">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
-              © {currentYear} Care Companion. All rights reserved.
+              © {currentYear} Kinpin. All rights reserved.
             </p>
             <div className="flex items-center space-x-4">
               {socialLinks.map((social) => (
