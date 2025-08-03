@@ -80,10 +80,15 @@ const BookingDetailsPage = () => {
             Back to Dashboard
           </Link>
           
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-heading font-bold text-gray-900">
-              Booking Details
-            </h1>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-heading font-bold text-gray-900">
+                Booking Details
+              </h1>
+              <p className="text-gray-600 font-medium mt-1">
+                Booking ID: {booking.bookingId || 'N/A'}
+              </p>
+            </div>
             <span className={`px-4 py-2 rounded-full text-sm font-medium ${getStatusBadgeClass(booking.status)}`}>
               {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
             </span>

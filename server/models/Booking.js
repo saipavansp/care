@@ -1,6 +1,23 @@
 const mongoose = require('mongoose');
 
+// Function to generate a unique booking ID
+const generateBookingId = () => {
+  // Format: KP-YYYYMMDD-XXXX where XXXX is a random number
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const randomPart = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
+  
+  return `KP-${year}${month}${day}-${randomPart}`;
+};
+
 const bookingSchema = new mongoose.Schema({
+  bookingId: {
+    type: String,
+    unique: true,
+    default: generateBookingId
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

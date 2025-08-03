@@ -97,6 +97,13 @@ const BookingCard = ({ booking, onUpdate }) => {
           </span>
         </div>
 
+        {/* Booking ID */}
+        <div className="mb-4 flex items-center">
+          <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded">
+            Booking ID: {booking.bookingId || 'N/A'}
+          </span>
+        </div>
+        
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           {/* Left Section - Booking Details */}
