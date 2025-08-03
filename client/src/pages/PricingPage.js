@@ -20,6 +20,65 @@ const PricingPage = () => {
       setPlans(response.plans);
     } catch (error) {
       console.error('Error fetching pricing plans:', error);
+      // Fallback pricing plans if API fails - using the same structure as in booking flow
+      setPlans([
+        {
+          id: 'single',
+          name: 'Single Visit Package',
+          price: 799,
+          originalPrice: 799, // No discount for single visit
+          visits: 1,
+          validity: 'One-time use',
+          description: 'One-time hospital visit assistance',
+          features: [
+            'Door-to-door companion service',
+            'In-clinic support & advocacy',
+            'Digital visit summary',
+            'Medicine reminders',
+            'Family updates via WhatsApp'
+          ],
+          popular: false,
+          savings: 0 // No savings for single visit
+        },
+        {
+          id: 'weekly',
+          name: 'Weekly Care Package',
+          price: 2800,
+          originalPrice: 3196,
+          visits: 4,
+          validity: '30 days from purchase',
+          description: '4 hospital visits within a month',
+          pricePerVisit: 700,
+          features: [
+            'All Single Visit features',
+            'Priority companion assignment',
+            'Dedicated care coordinator',
+            'Monthly health report',
+            'Free rescheduling'
+          ],
+          popular: true,
+          savings: 396
+        },
+        {
+          id: 'monthly',
+          name: 'Monthly Complete Care Package',
+          price: 4500,
+          originalPrice: 6392,
+          visits: 8,
+          validity: '30 days from purchase',
+          description: '8 hospital visits + priority scheduling',
+          pricePerVisit: 562.50,
+          features: [
+            'All Weekly Package features',
+            'Same companion preference',
+            'Priority booking included',
+            'Medicine delivery assistance',
+            'Emergency support helpline'
+          ],
+          popular: false,
+          savings: 1892
+        }
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -53,6 +112,9 @@ const PricingPage = () => {
               <FiTrendingUp className="mr-2" />
               <span className="font-medium">Save up to 33% with our packages</span>
             </div>
+            <p className="text-sm text-gray-600 mt-4">
+              * All prices are exclusive of 18% GST
+            </p>
           </motion.div>
         </div>
       </section>
@@ -85,22 +147,37 @@ const PricingPage = () => {
                     <h3 className="text-xl font-heading font-semibold text-gray-900 mb-2">
                       {plan.name}
                     </h3>
-                    <div className="mb-4">
+                    {plan.description && (
+                      <p className="text-sm text-gray-600 mb-2">
+                        "{plan.description}"
+                      </p>
+                    )}
+                    <div className="mb-2">
                       <span className="text-4xl font-bold text-gray-900">
                         {formatCurrency(plan.price)}
                       </span>
-                      {plan.originalPrice && (
+                      {plan.originalPrice && plan.originalPrice > plan.price && (
                         <span className="text-gray-500 line-through ml-2">
                           {formatCurrency(plan.originalPrice)}
                         </span>
                       )}
                     </div>
-                    {plan.pricePerVisit && (
+                    {plan.visits > 1 && (
                       <p className="text-sm text-gray-600">
+                        {plan.visits} visits
+                      </p>
+                    )}
+                    {plan.validity && (
+                      <p className="text-sm text-gray-600">
+                        Validity: {plan.validity}
+                      </p>
+                    )}
+                    {plan.pricePerVisit && (
+                      <p className="text-sm text-gray-600 mt-1">
                         ₹{plan.pricePerVisit} per visit
                       </p>
                     )}
-                    {plan.savings && (
+                    {plan.savings > 0 && (
                       <p className="text-sm text-green-600 font-medium mt-2">
                         Save {formatCurrency(plan.savings)}
                       </p>
@@ -173,8 +250,8 @@ const PricingPage = () => {
                   Do unused visits expire?
                 </h3>
                 <p className="text-gray-600">
-                  Package visits are valid for 12 months from the date of purchase. We'll send you reminders 
-                  to ensure you utilize all your visits.
+                  Weekly and Monthly Care Package visits are valid for 30 days from the date of purchase. We'll send you reminders 
+                  to ensure you utilize all your visits within the validity period.
                 </p>
               </div>
 
