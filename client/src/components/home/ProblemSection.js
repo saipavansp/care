@@ -79,7 +79,7 @@ const ProblemSection = () => {
           className="mt-12 text-center bg-primary/10 rounded-2xl p-8"
         >
           <h3 className="text-2xl font-heading font-semibold text-gray-900 mb-2">
-            That's Why We Created Care Companion
+            That's Why We Created Kinpin
           </h3>
           <p className="text-gray-700 max-w-2xl mx-auto">
             Professional healthcare companions who ensure no patient faces their medical journey alone, 

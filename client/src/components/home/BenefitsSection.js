@@ -13,7 +13,7 @@ const BenefitsSection = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
-            Why Choose Care Companion?
+            Why Choose Kinpin?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             We provide comprehensive support that goes beyond just accompaniment.

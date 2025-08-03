@@ -132,7 +132,7 @@ const HowItWorksPage = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-6">
-              How Care Companion Works
+              How Kinpin Works
             </h1>
             <p className="text-xl text-gray-600 mb-8">
               A step-by-step guide to our healthcare companion service
@@ -213,7 +213,7 @@ const HowItWorksPage = () => {
               Our Companion Standards
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Every Care Companion meets our strict quality standards
+              Every Kinpin companion meets our strict quality standards
             </p>
           </motion.div>
 
@@ -357,7 +357,7 @@ const HowItWorksPage = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-heading font-bold text-white mb-4">
-              Ready to Experience Care Companion?
+              Ready to Experience Kinpin?
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
               Book your first companion visit and see the difference professional healthcare support makes

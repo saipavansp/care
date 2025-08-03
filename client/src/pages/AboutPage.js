@@ -45,7 +45,7 @@ const AboutPage = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-6">
-              About Care Companion
+              About Kinpin
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
               We're on a mission to ensure no patient faces their healthcare journey alone. 
@@ -70,7 +70,7 @@ const AboutPage = () => {
               </h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  Care Companion was born from a personal experience. When our founder's elderly 
+                  Kinpin was born from a personal experience. When our founder's elderly 
                   mother needed frequent hospital visits but family members couldn't always accompany 
                   her due to work commitments, we realized thousands of families face the same challenge.
                 </p>
@@ -95,7 +95,7 @@ const AboutPage = () => {
             >
               <img
                 src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Care Companion team"
+                alt="Kinpin team"
                 className="rounded-2xl shadow-xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-primary text-white rounded-xl p-6 shadow-lg">
@@ -119,7 +119,7 @@ const AboutPage = () => {
               Our Core Values
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              These principles guide everything we do at Care Companion
+              These principles guide everything we do at Kinpin
             </p>
           </motion.div>
 

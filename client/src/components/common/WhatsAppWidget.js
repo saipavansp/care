@@ -61,7 +61,7 @@ const WhatsAppWidget = () => {
                   <FaWhatsapp className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Care Companion Support</h3>
+                  <h3 className="font-semibold">Kinpin Support</h3>
                   <p className="text-xs opacity-90">Typically replies within minutes</p>
                 </div>
               </div>
@@ -77,7 +77,7 @@ const WhatsAppWidget = () => {
             <div className="p-4 bg-gray-50">
               <div className="bg-white rounded-lg p-3 shadow-sm mb-4">
                 <p className="text-sm text-gray-700">
-                  👋 Hello! Welcome to Care Companion.
+                  👋 Hello! Welcome to Kinpin.
                 </p>
                 <p className="text-sm text-gray-700 mt-2">
                   How can we help you today?

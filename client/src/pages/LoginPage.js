@@ -75,10 +75,10 @@ const LoginPage = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center justify-center space-x-2 mb-8">
           <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white text-2xl font-bold">CC</span>
+            <span className="text-white text-2xl font-bold">KP</span>
           </div>
           <span className="text-2xl font-heading font-semibold text-gray-800">
-            Care Companion
+            Kinpin
           </span>
         </Link>
 

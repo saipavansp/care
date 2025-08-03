@@ -1,4 +1,4 @@
-export const APP_NAME = 'Care Companion';
+export const APP_NAME = 'Kinpin';
 
 export const LANGUAGES = [
   'Hindi',
@@ -40,7 +40,7 @@ export const TESTIMONIALS = [
     id: 1,
     name: 'Priya Sharma',
     role: 'Daughter',
-    content: 'Care Companion has been a lifesaver for my elderly mother. The companions are professional, caring, and provide detailed updates after each visit.',
+    content: 'Kinpin has been a lifesaver for my elderly mother. The companions are professional, caring, and provide detailed updates after each visit.',
     rating: 5,
     image: 'https://i.pravatar.cc/100?img=1'
   },
@@ -113,7 +113,7 @@ export const HOW_IT_WORKS_STEPS = [
 ];
 
 export const WHATSAPP_NUMBER = '+919876543210';
-export const WHATSAPP_MESSAGE = 'Hi, I would like to know more about Care Companion services.';
+export const WHATSAPP_MESSAGE = 'Hi, I would like to know more about Kinpin services.';
 
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const PHONE_REGEX = /^[6-9]\d{9}$/;

@@ -56,7 +56,7 @@ app.use('/api/pricing', pricingRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Care Companion API is running' });
+  res.json({ status: 'OK', message: 'Kinpin API is running' });
 });
 
 // Error handling middleware
