@@ -214,7 +214,7 @@ const LoginPage = () => {
           </div>
 
           {/* Demo Login */}
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
+          {/* <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <p className="text-sm text-gray-600 mb-2">
               User Demo:
             </p>
@@ -222,7 +222,7 @@ const LoginPage = () => {
               Phone: 9876543210
             </p>
             <p className="text-sm font-mono">Password: demo123</p>
-          </div>
+          </div> */}
 
           {/* Sign Up Link */}
           <p className="text-center text-gray-600">
