@@ -10,7 +10,7 @@ import { PHONE_REGEX } from '../utils/constants';
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [loginType, setLoginType] = useState('user'); // 'user' or 'companion'
+  const loginType = 'user'; // Only user login is enabled
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -84,40 +84,15 @@ const LoginPage = () => {
 
         {/* Login Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          {/* Login Type Selector */}
-          <div className="flex rounded-lg bg-gray-100 p-1 mb-6">
-            <button
-              onClick={() => setLoginType('user')}
-              className={`flex-1 flex items-center justify-center py-2 px-4 rounded-md transition-all ${
-                loginType === 'user'
-                  ? 'bg-white shadow-sm text-primary'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-            >
-              <FiUser className="mr-2" />
-              User Login
-            </button>
-            <button
-              onClick={() => setLoginType('companion')}
-              className={`flex-1 flex items-center justify-center py-2 px-4 rounded-md transition-all ${
-                loginType === 'companion'
-                  ? 'bg-white shadow-sm text-primary'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-            >
-              <FiUsers className="mr-2" />
-              Companion Login
-            </button>
-          </div>
+          {/* Hidden Login Type */}
+          <input type="hidden" value="user" />
 
           <h2 className="text-2xl font-heading font-bold text-gray-900 mb-2 text-center">
             Welcome Back
           </h2>
-          <p className="text-gray-600 text-center mb-8">
-            {loginType === 'companion' 
-              ? 'Login to your companion dashboard'
-              : 'Login to manage your bookings'}
-          </p>
+                      <p className="text-gray-600 text-center mb-8">
+              Login to manage your bookings
+            </p>
 
           {message && (
             <div className="bg-orange-50 text-orange-600 p-3 rounded-lg mb-4 text-sm">
@@ -241,38 +216,24 @@ const LoginPage = () => {
           {/* Demo Login */}
           <div className="bg-gray-50 rounded-lg p-4 mb-6">
             <p className="text-sm text-gray-600 mb-2">
-              {loginType === 'companion' ? 'Companion Demo:' : 'User Demo:'}
+              User Demo:
             </p>
             <p className="text-sm font-mono">
-              Phone: {loginType === 'companion' ? '9876543211' : '9876543210'}
+              Phone: 9876543210
             </p>
             <p className="text-sm font-mono">Password: demo123</p>
           </div>
 
           {/* Sign Up Link */}
-          {loginType === 'user' && (
-            <p className="text-center text-gray-600">
-              Don't have an account?{' '}
-              <Link
-                to="/register"
-                className="text-primary hover:text-primary-dark font-medium"
-              >
-                Sign up
-              </Link>
-            </p>
-          )}
-
-          {loginType === 'companion' && (
-            <p className="text-center text-gray-600 text-sm">
-              Want to become a companion?{' '}
-              <Link
-                to="/companion/apply"
-                className="text-primary hover:text-primary-dark font-medium"
-              >
-                Apply here
-              </Link>
-            </p>
-          )}
+          <p className="text-center text-gray-600">
+            Don't have an account?{' '}
+            <Link
+              to="/register"
+              className="text-primary hover:text-primary-dark font-medium"
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
       </motion.div>
     </div>

@@ -32,7 +32,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link 
-            to={isAuthenticated ? (user?.role === 'companion' ? '/companion/dashboard' : '/dashboard') : '/'}
+            to={isAuthenticated ? '/dashboard' : '/'}
             className="flex items-center space-x-2"
           >
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -60,9 +60,9 @@ const Header = () => {
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 <Link
-                  to={user?.role === 'companion' ? '/companion/dashboard' : '/dashboard'}
+                  to="/dashboard"
                   className={`text-gray-700 hover:text-primary transition-colors duration-200 font-medium ${
-                    isActive(user?.role === 'companion' ? '/companion/dashboard' : '/dashboard') ? 'text-primary' : ''
+                    isActive('/dashboard') ? 'text-primary' : ''
                   }`}
                 >
                   Dashboard
@@ -106,11 +106,9 @@ const Header = () => {
                 Book Now
               </button>
             ) : (
-              user?.role !== 'companion' && (
-                <Link to="/book" className="btn-primary">
-                  Book Now
-                </Link>
-              )
+              <Link to="/book" className="btn-primary">
+                Book Now
+              </Link>
             )}
           </div>
 
