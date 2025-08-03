@@ -34,7 +34,7 @@ const HeroSection = () => {
           <motion.div {...fadeIn} className="text-center lg:text-left">
             <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full mb-6">
               <FaHeartbeat className="w-4 h-4 mr-2" />
-              <span className="text-sm font-medium">500+ परिवारों का भरोसा</span>
+              <span className="text-sm font-medium">500+ Satisfied Families</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-900 mb-6 leading-tight">
@@ -43,8 +43,7 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0">
-              Your trusted healthcare companion for every hospital visit. Professional support, 
-              door-to-door service, and peace of mind for you and your family.
+              a shoulder to lean on, a voice you can trust.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
@@ -110,7 +109,7 @@ const HeroSection = () => {
                   </div>
                   <div>
                     <p className="text-sm font-semibold">Trained Companions</p>
-                    <p className="text-xs text-gray-600">Hindi, English & Regional</p>
+                    <p className="text-xs text-gray-600">Telugu & English</p>
                   </div>
                 </motion.div>
 
@@ -124,7 +123,7 @@ const HeroSection = () => {
                   </div>
                   <div>
                     <p className="text-sm font-semibold">Major Hospitals</p>
-                    <p className="text-xs text-gray-600">AIIMS, Apollo, Fortis & More</p>
+                    <p className="text-xs text-gray-600">Apollo, KIMS, Yashoda & More</p>
                   </div>
                 </motion.div>
               </div>
@@ -138,8 +137,8 @@ const HeroSection = () => {
               <div className="absolute -bottom-8 right-8 bg-white rounded-lg shadow-lg p-3 flex items-center space-x-2">
                 <span className="text-2xl">🇮🇳</span>
                 <div>
-                  <p className="text-xs font-semibold">Made in India</p>
-                  <p className="text-xs text-gray-600">For Indian Families</p>
+                  <p className="text-xs font-semibold">Made in Hyderabad</p>
+                  <p className="text-xs text-gray-600">For Telugu Families</p>
                 </div>
               </div>
             </div>
