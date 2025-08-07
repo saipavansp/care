@@ -5,27 +5,27 @@ const LinkedInStyleLogo = ({ size = 'md', className = '', linkTo = '/' }) => {
   // Size variants
   const sizeClasses = {
     sm: {
-      height: 'h-7',
+      height: 'h-6',
       fontSize: 'text-base',
-      padding: 'px-2',
+      padding: 'px-1.5',
       cornerRadius: 'rounded'
     },
     md: {
-      height: 'h-9',
-      fontSize: 'text-lg',
-      padding: 'px-2.5',
+      height: 'h-8',
+      fontSize: 'text-xl',
+      padding: 'px-2',
       cornerRadius: 'rounded-md'
     },
     lg: {
-      height: 'h-11',
+      height: 'h-10',
       fontSize: 'text-2xl',
-      padding: 'px-3.5',
+      padding: 'px-3',
       cornerRadius: 'rounded-lg'
     },
     xl: {
-      height: 'h-14',
+      height: 'h-12',
       fontSize: 'text-3xl',
-      padding: 'px-5',
+      padding: 'px-4',
       cornerRadius: 'rounded-lg'
     }
   };
@@ -38,7 +38,7 @@ const LinkedInStyleLogo = ({ size = 'md', className = '', linkTo = '/' }) => {
         <div className={`bg-primary ${height} ${padding} ${cornerRadius} flex items-center justify-center`}>
           <span className={`text-white ${fontSize} font-bold font-heading leading-none`}>kin</span>
         </div>
-        <span className={`text-gray-800 ${fontSize} font-bold font-heading leading-none`} style={{ marginLeft: '2px' }}>pin</span>
+        <span className={`text-gray-800 ${fontSize} font-bold font-heading leading-none`} style={{ marginLeft: '1px' }}>pin</span>
       </div>
     </Link>
   );
