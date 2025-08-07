@@ -6,6 +6,7 @@ import { FiEye, FiEyeOff, FiPhone, FiLock, FiUser, FiMail } from 'react-icons/fi
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { PHONE_REGEX, EMAIL_REGEX } from '../utils/constants';
+import LinkedInStyleLogo from '../components/common/LinkedInStyleLogo';
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,15 +46,10 @@ const RegisterPage = () => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md w-full"
       >
-        {/* Logo */}
-        <Link to="/" className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white text-2xl font-bold">KP</span>
-          </div>
-          <span className="text-2xl font-heading font-semibold text-gray-800">
-            Kinpin
-          </span>
-        </Link>
+        {/* LinkedIn-Style Logo */}
+        <div className="flex justify-center mb-8">
+          <LinkedInStyleLogo size="xl" />
+        </div>
 
         {/* Register Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">

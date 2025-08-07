@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiPhone, FiMail, FiMapPin, FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
+import LinkedInStyleLogo from '../common/LinkedInStyleLogo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -41,12 +42,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white text-xl font-bold">KP</span>
-              </div>
-              <span className="text-xl font-heading font-semibold">Kinpin</span>
-            </div>
+            <LinkedInStyleLogo size="lg" className="mb-4" />
             <p className="text-gray-400 mb-6 max-w-md">
               Your trusted healthcare companion for every hospital visit. Professional support, 
               door-to-door service, and peace of mind for you and your family.

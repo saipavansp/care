@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import LinkedInStyleLogo from '../common/LinkedInStyleLogo';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,18 +31,12 @@ const Header = () => {
     <header className="bg-white shadow-md sticky top-0 z-50">
       <nav className="max-width-container section-padding">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link 
-            to={isAuthenticated ? '/dashboard' : '/'}
-            className="flex items-center space-x-2"
-          >
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white text-xl font-bold">KP</span>
-            </div>
-            <span className="text-xl font-heading font-semibold text-gray-800">
-              Kinpin
-            </span>
-          </Link>
+          {/* LinkedIn-Style Logo */}
+          <LinkedInStyleLogo 
+            size="md" 
+            linkTo={isAuthenticated ? '/dashboard' : '/'} 
+            className="hover:opacity-90 transition-opacity"
+          />
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
