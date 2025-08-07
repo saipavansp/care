@@ -109,7 +109,6 @@ const HeroSection = () => {
                   </div>
                   <div>
                     <p className="text-sm font-semibold">Trained Companions</p>
-                    <p className="text-xs text-gray-600">Telugu & English</p>
                   </div>
                 </motion.div>
 
@@ -138,7 +137,7 @@ const HeroSection = () => {
                 <span className="text-2xl">🇮🇳</span>
                 <div>
                   <p className="text-xs font-semibold">Made in Hyderabad</p>
-                  <p className="text-xs text-gray-600">For Telugu Families</p>
+                  
                 </div>
               </div>
             </div>
