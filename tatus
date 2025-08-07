@@ -1,0 +1,3 @@
+[33m32956c8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Update package structure with new pricing and add 18% GST calculation
+[33m99eb18a[m Fix booking flow: update package options, fix Next button, and reorder steps
+[33mf5db241[m Fix registration issues with better error handling and data formatting

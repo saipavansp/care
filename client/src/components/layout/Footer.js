@@ -15,15 +15,15 @@ const Footer = () => {
     ],
     services: [
       { name: 'Book Companion', path: '/book' },
-      { name: 'Corporate Plans', path: '/corporate' },
-      { name: 'Family Packages', path: '/pricing' },
-      { name: 'Emergency Support', path: '/emergency' }
+      { name: 'Corporate Plans', path: '/corporate-plans' },
+      { name: 'Family Packages', path: '/family-packages' },
+      { name: 'Emergency Support', path: '/emergency-support' }
     ],
     support: [
-      { name: 'Help Center', path: '/help' },
+      { name: 'Help Center', path: '/help-center' },
       { name: 'FAQs', path: '/faqs' },
-      { name: 'Privacy Policy', path: '/privacy' },
-      { name: 'Terms of Service', path: '/terms' }
+      { name: 'Privacy Policy', path: '/privacy-policy' },
+      { name: 'Terms of Service', path: '/terms-of-service' }
     ]
   };
 

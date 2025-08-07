@@ -22,6 +22,13 @@ import BookingDetailsPage from './pages/BookingDetailsPage';
 import ProfilePage from './pages/ProfilePage';
 import CompanionDashboard from './pages/CompanionDashboard';
 import NotFoundPage from './pages/NotFoundPage';
+import CorporatePlansPage from './pages/CorporatePlansPage';
+import FamilyPackagesPage from './pages/FamilyPackagesPage';
+import EmergencySupportPage from './pages/EmergencySupportPage';
+import HelpCenterPage from './pages/HelpCenterPage';
+import FAQsPage from './pages/FAQsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
 
 // Components
 import WhatsAppWidget from './components/common/WhatsAppWidget';
@@ -41,6 +48,15 @@ function AppContent() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          
+          {/* Coming Soon Pages */}
+          <Route path="/corporate-plans" element={<CorporatePlansPage />} />
+          <Route path="/family-packages" element={<FamilyPackagesPage />} />
+          <Route path="/emergency-support" element={<EmergencySupportPage />} />
+          <Route path="/help-center" element={<HelpCenterPage />} />
+          <Route path="/faqs" element={<FAQsPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms-of-service" element={<TermsOfServicePage />} />
           
           {/* Protected Routes */}
           <Route path="/dashboard" element={
