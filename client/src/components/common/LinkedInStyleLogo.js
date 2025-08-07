@@ -5,40 +5,40 @@ const LinkedInStyleLogo = ({ size = 'md', className = '', linkTo = '/' }) => {
   // Size variants
   const sizeClasses = {
     sm: {
-      container: 'h-8',
-      box: 'px-1.5 py-0.5 rounded',
-      text: 'text-sm font-bold',
-      spacing: '-ml-0.5'
+      height: 'h-6',
+      fontSize: 'text-sm',
+      padding: 'px-1.5',
+      cornerRadius: 'rounded'
     },
     md: {
-      container: 'h-10',
-      box: 'px-2 py-1 rounded-md',
-      text: 'text-base font-bold',
-      spacing: '-ml-1'
+      height: 'h-8',
+      fontSize: 'text-base',
+      padding: 'px-2',
+      cornerRadius: 'rounded-md'
     },
     lg: {
-      container: 'h-12',
-      box: 'px-3 py-1.5 rounded-lg',
-      text: 'text-xl font-bold',
-      spacing: '-ml-1.5'
+      height: 'h-10',
+      fontSize: 'text-xl',
+      padding: 'px-3',
+      cornerRadius: 'rounded-lg'
     },
     xl: {
-      container: 'h-16',
-      box: 'px-4 py-2 rounded-lg',
-      text: 'text-2xl font-bold',
-      spacing: '-ml-2'
+      height: 'h-12',
+      fontSize: 'text-2xl',
+      padding: 'px-4',
+      cornerRadius: 'rounded-lg'
     }
   };
 
-  const { container, box, text, spacing } = sizeClasses[size] || sizeClasses.md;
+  const { height, fontSize, padding, cornerRadius } = sizeClasses[size] || sizeClasses.md;
 
   return (
-    <Link to={linkTo} className={`flex items-center ${container} ${className}`}>
-      <div className="flex items-center">
-        <div className={`bg-primary ${box} flex items-center justify-center`}>
-          <span className={`text-white ${text} font-heading`}>kin</span>
+    <Link to={linkTo} className={`inline-flex items-center ${className}`}>
+      <div className="flex items-center leading-none">
+        <div className={`bg-primary ${height} ${padding} ${cornerRadius} flex items-center justify-center`}>
+          <span className={`text-white ${fontSize} font-bold font-heading leading-none`}>kin</span>
         </div>
-        <span className={`text-gray-800 ${text} font-bold font-heading ${spacing}`}>pin</span>
+        <span className={`text-gray-800 ${fontSize} font-bold font-heading leading-none`} style={{ marginLeft: '-1px' }}>pin</span>
       </div>
     </Link>
   );
