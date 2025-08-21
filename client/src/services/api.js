@@ -36,8 +36,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Clear token and redirect to login
+    const status = error.response?.status;
+    const url = error.config?.url || '';
+    const isAuthFlow = url.includes('/auth/login') || url.includes('/auth/register') || url.includes('/auth/password/');
+
+    if (status === 401 && !isAuthFlow) {
+      // Only force-logout for protected API calls, not for auth flows
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';

@@ -4,7 +4,6 @@ const authService = {
   // Register new user
   register: async (userData) => {
     try {
-      console.log('Registration attempt with:', userData);
       
       // Format the phone number (remove spaces, ensure it's a string)
       let phone = userData.phone;
@@ -32,7 +31,6 @@ const authService = {
         terms: undefined
       };
       
-      console.log('Sending registration data:', dataToSend);
       
       // Add a timeout to handle slow server responses
       const controller = new AbortController();
@@ -45,7 +43,6 @@ const authService = {
         });
         
         clearTimeout(timeoutId);
-        console.log('Raw registration response:', response);
         
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
@@ -79,16 +76,10 @@ const authService = {
           return mockResponse;
         }
         
-        console.error('Registration error:', innerError);
-        if (innerError.response) {
-          console.error('Error response:', innerError.response.data);
-          console.error('Error status:', innerError.response.status);
-        }
         
         throw innerError;
       }
     } catch (error) {
-      console.error('Error in auth service registration:', error);
       throw error;
     }
   },
@@ -101,8 +92,6 @@ const authService = {
         ? '/auth/companion/login' 
         : '/auth/login';
       
-      console.log('Login endpoint:', endpoint);
-      console.log('API base URL:', api.defaults.baseURL);
       
       // Format the phone number (remove spaces, ensure it's a string)
       let phone = credentials.phone;
@@ -125,7 +114,6 @@ const authService = {
         phone: phone
       };
       
-      console.log('Sending login data:', dataToSend);
       
       // Add a timeout to handle slow server responses
       const controller = new AbortController();
@@ -138,7 +126,6 @@ const authService = {
         });
         
         clearTimeout(timeoutId);
-        console.log('Raw login response:', response);
         
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
@@ -175,7 +162,6 @@ const authService = {
         throw innerError;
       }
     } catch (error) {
-      console.error('Error in auth service login:', error);
       throw error;
     }
   },

@@ -28,14 +28,11 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log('Form submitted with data:', data);
       setIsLoading(true);
       // Add login type to the data
       const loginData = { ...data, loginType };
-      console.log('Calling login with data:', loginData);
       
       const result = await login(loginData);
-      console.log('Login result:', result);
       setIsLoading(false);
 
       if (result.success) {
@@ -50,14 +47,12 @@ const LoginPage = () => {
           navigate(from, { replace: true });
         }
       } else {
-        console.error('Login failed:', result.error);
         setError('root', {
           type: 'manual',
           message: result.error
         });
       }
     } catch (error) {
-      console.error('Error in login submit handler:', error);
       setIsLoading(false);
       setError('root', {
         type: 'manual',
