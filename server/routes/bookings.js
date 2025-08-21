@@ -12,7 +12,7 @@ router.post('/create', auth, [
   body('patientAge').isInt({ min: 1, max: 120 }).withMessage('Please enter a valid age'),
   body('patientGender').isIn(['male', 'female', 'other']).withMessage('Please select a valid gender'),
   body('hospital').trim().notEmpty().withMessage('Hospital is required'),
-  body('doctor').trim().notEmpty().withMessage('Doctor name is required'),
+  body('doctor').optional().trim(),
   body('appointmentDate').isISO8601().withMessage('Please enter a valid date'),
   body('appointmentTime').trim().notEmpty().withMessage('Appointment time is required'),
   body('pickupAddress').trim().notEmpty().withMessage('Pickup address is required'),
