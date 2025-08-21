@@ -66,21 +66,23 @@ const ForgotPasswordPage = () => {
 
         {step === 1 && (
           <form onSubmit={handleSubmit(onSend)} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiPhone className="h-5 w-5 text-gray-400" />
+            {channel === 'sms' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiPhone className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="tel"
+                    {...register('phone', { required: 'Phone number is required', pattern: { value: PHONE_REGEX, message: 'Enter a valid 10-digit number' } })}
+                    className="input-field pl-10"
+                    placeholder="9876543210"
+                  />
                 </div>
-                <input
-                  type="tel"
-                  {...register('phone', { required: 'Phone number is required', pattern: { value: PHONE_REGEX, message: 'Enter a valid 10-digit number' } })}
-                  className="input-field pl-10"
-                  placeholder="9876543210"
-                />
+                {errors.phone && <p className="error-text">{errors.phone.message}</p>}
               </div>
-              {errors.phone && <p className="error-text">{errors.phone.message}</p>}
-            </div>
+            )}
 
             {channel === 'email' && (
               <div>

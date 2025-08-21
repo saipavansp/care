@@ -357,27 +357,31 @@ router.put('/change-password', auth, [
 
 // Forgot password - request OTP via chosen channel
 router.post('/password/forgot', [
-  body('phone').trim().notEmpty().withMessage('Phone is required')
-    .matches(/^[6-9]\d{9}$/).withMessage('Please enter a valid Indian phone number'),
+  body('phone').optional().trim().matches(/^[6-9]\d{9}$/).withMessage('Please enter a valid Indian phone number'),
   body('channel').optional().isIn(['sms', 'email']).withMessage('Invalid channel'),
   body('email').optional().isEmail().withMessage('Please enter a valid email')
 ], validate, async (req, res) => {
   try {
     const { phone, channel, email } = req.body;
-    const user = await User.findOne({ phone });
-    if (!user) {
-      return res.status(404).json({ message: 'No account found for this phone' });
-    }
+    const chosen = channel || 'email';
 
-    // Default channel to sms if not chosen
-    const chosen = channel || 'sms';
-
-    // If email channel selected, require email to match user record (case-insensitive)
+    let user;
     if (chosen === 'email') {
       const provided = (email || '').trim().toLowerCase();
-      const saved = (user.email || '').trim().toLowerCase();
-      if (!provided || !saved || provided !== saved) {
-        return res.status(400).json({ message: 'Email does not match our records' });
+      if (!provided) {
+        return res.status(400).json({ message: 'Email is required' });
+      }
+      user = await User.findOne({ email: provided });
+      if (!user) {
+        return res.status(404).json({ message: 'No account found for this email' });
+      }
+    } else {
+      if (!phone) {
+        return res.status(400).json({ message: 'Phone is required' });
+      }
+      user = await User.findOne({ phone });
+      if (!user) {
+        return res.status(404).json({ message: 'No account found for this phone' });
       }
     }
 
@@ -422,16 +426,23 @@ router.post('/password/forgot', [
 
 // Verify password reset OTP and issue reset token
 router.post('/password/verify', [
-  body('phone').trim().notEmpty().withMessage('Phone is required')
-    .matches(/^[6-9]\d{9}$/).withMessage('Please enter a valid Indian phone number'),
+  body('phone').optional().trim().matches(/^[6-9]\d{9}$/).withMessage('Please enter a valid Indian phone number'),
+  body('email').optional().isEmail().withMessage('Please enter a valid email'),
   body('channel').isIn(['sms', 'email']).withMessage('Invalid channel'),
   body('code').trim().isLength({ min: 6, max: 6 }).withMessage('Invalid code')
 ], validate, async (req, res) => {
   try {
-    const { phone, channel, code } = req.body;
-    const user = await User.findOne({ phone });
-    if (!user) {
-      return res.status(404).json({ message: 'No account found for this phone' });
+    const { phone, email, channel, code } = req.body;
+    let user;
+    if (channel === 'email') {
+      const provided = (email || '').trim().toLowerCase();
+      if (!provided) return res.status(400).json({ message: 'Email is required' });
+      user = await User.findOne({ email: provided });
+      if (!user) return res.status(404).json({ message: 'No account found for this email' });
+    } else {
+      if (!phone) return res.status(400).json({ message: 'Phone is required' });
+      user = await User.findOne({ phone });
+      if (!user) return res.status(404).json({ message: 'No account found for this phone' });
     }
 
     const subject = channel === 'sms' ? phone : (user.email || '');
