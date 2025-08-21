@@ -12,9 +12,11 @@ const Header = () => {
   const location = useLocation();
 
   const navLinks = [
-    ...(!isAuthenticated ? [{ name: 'Home', path: '/' }] : []),
-    { name: 'How It Works', path: '/how-it-works' },
-    { name: 'About', path: '/about' },
+    ...(!isAuthenticated ? [
+      { name: 'Home', path: '/' },
+      { name: 'How It Works', path: '/how-it-works' },
+      { name: 'About', path: '/about' },
+    ] : []),
     { name: 'Pricing', path: '/pricing' },
   ];
 
