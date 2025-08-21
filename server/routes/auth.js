@@ -10,6 +10,32 @@ const smsProvider = require('../utils/smsProvider');
 
 const router = express.Router();
 
+// Route-level CORS headers for auth endpoints (helps ensure preflight succeeds)
+router.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    'https://www.kinpin.in',
+    'https://kinpin.in',
+    'https://carecap.vercel.app',
+    'http://localhost:3000',
+    process.env.CLIENT_URL
+  ].filter(Boolean);
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  // ensure caches/proxies vary by Origin
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Generate JWT token
 const generateToken = (userId) => {
   return jwt.sign(
