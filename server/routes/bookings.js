@@ -66,6 +66,52 @@ router.post('/create', auth, [
     const booking = new Booking(bookingData);
     await booking.save();
 
+    // Send booking details via email to the specified recipient
+    try {
+      const nodemailer = require('nodemailer');
+      const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+        port: Number(process.env.EMAIL_PORT || 587),
+        secure: false,
+        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+      });
+
+      const user = req.user || {};
+      const toAddress = process.env.BOOKING_NOTIFY_TO || process.env.EMAIL_USER;
+      const fromAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER;
+
+      const lines = [
+        `User Name: ${user.name || ''}`,
+        `User Phone: ${user.phone || ''}`,
+        `User Email: ${user.email || ''}`,
+        '',
+        `Patient Name: ${req.body.patientName}`,
+        `Patient Age: ${req.body.patientAge}`,
+        `Patient Gender: ${req.body.patientGender}`,
+        `Hospital: ${req.body.hospital}`,
+        `Doctor: ${req.body.doctor}`,
+        `Appointment Date: ${req.body.appointmentDate}`,
+        `Appointment Time: ${req.body.appointmentTime}`,
+        `Pickup Address: ${req.body.pickupAddress}`,
+        req.body.package ? `Package: ${req.body.package}` : '',
+        req.body.preferences ? `Preferences: ${JSON.stringify(req.body.preferences)}` : '',
+        `Total Amount: ${req.body.totalAmount}`,
+        '',
+        `Booking ID: ${booking._id}`,
+        `Created At: ${booking.createdAt}`
+      ].filter(Boolean);
+
+      await transporter.sendMail({
+        from: fromAddress,
+        to: toAddress,
+        subject: 'New Booking Submission',
+        text: lines.join('\n')
+      });
+    } catch (mailErr) {
+      console.error('Booking email send error:', mailErr);
+      // Do not fail the booking if email fails
+    }
+
     res.status(201).json({
       message: 'Booking created successfully',
       booking
