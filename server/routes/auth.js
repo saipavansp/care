@@ -199,10 +199,7 @@ router.post('/login', [
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    // Enforce phone verification
-    if (!user.phoneVerified) {
-      return res.status(403).json({ message: 'Please verify your phone number to login' });
-    }
+    // Allow login regardless of phone verification status
 
     // Check password
     const isPasswordValid = await user.comparePassword(password);
