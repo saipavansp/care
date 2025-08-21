@@ -55,7 +55,7 @@ const bookingSchema = new mongoose.Schema({
   },
   doctor: {
     type: String,
-    required: true,
+    required: false,
     trim: true
   },
   department: {
