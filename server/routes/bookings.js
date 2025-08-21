@@ -23,6 +23,8 @@ router.post('/create', auth, [
       userId: req.userId,
       ...req.body
     };
+    // Confirm booking immediately (no online payments for now)
+    bookingData.status = 'confirmed';
 
     // Check for conflicting bookings
     const appointmentDate = new Date(req.body.appointmentDate);
@@ -81,6 +83,10 @@ router.post('/create', auth, [
       const fromAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER;
 
       const lines = [
+        `Booking ID: ${booking.bookingId} (MongoID: ${booking._id})`,
+        `Status: ${booking.status}`,
+        `Created At: ${booking.createdAt}`,
+        '',
         `User Name: ${user.name || ''}`,
         `User Phone: ${user.phone || ''}`,
         `User Email: ${user.email || ''}`,
@@ -95,17 +101,38 @@ router.post('/create', auth, [
         `Pickup Address: ${req.body.pickupAddress}`,
         req.body.package ? `Package: ${req.body.package}` : '',
         req.body.preferences ? `Preferences: ${JSON.stringify(req.body.preferences)}` : '',
-        `Total Amount: ${req.body.totalAmount}`,
-        '',
-        `Booking ID: ${booking._id}`,
-        `Created At: ${booking.createdAt}`
+        `Total Amount: ${req.body.totalAmount}`
       ].filter(Boolean);
+
+      const html = `
+        <h2>New Booking Confirmation</h2>
+        <p><strong>Booking ID:</strong> ${booking.bookingId}</p>
+        <p><strong>Status:</strong> ${booking.status}</p>
+        <p><strong>Created At:</strong> ${new Date(booking.createdAt).toLocaleString()}</p>
+        <hr />
+        <p><strong>User Name:</strong> ${user.name || ''}</p>
+        <p><strong>User Phone:</strong> ${user.phone || ''}</p>
+        <p><strong>User Email:</strong> ${user.email || ''}</p>
+        <hr />
+        <p><strong>Patient Name:</strong> ${req.body.patientName}</p>
+        <p><strong>Patient Age:</strong> ${req.body.patientAge}</p>
+        <p><strong>Patient Gender:</strong> ${req.body.patientGender}</p>
+        <p><strong>Hospital:</strong> ${req.body.hospital}</p>
+        <p><strong>Doctor:</strong> ${req.body.doctor}</p>
+        <p><strong>Appointment Date:</strong> ${req.body.appointmentDate}</p>
+        <p><strong>Appointment Time:</strong> ${req.body.appointmentTime}</p>
+        <p><strong>Pickup Address:</strong> ${req.body.pickupAddress}</p>
+        ${req.body.package ? `<p><strong>Package:</strong> ${req.body.package}</p>` : ''}
+        ${req.body.preferences ? `<p><strong>Preferences:</strong> ${JSON.stringify(req.body.preferences)}</p>` : ''}
+        <p><strong>Total Amount:</strong> ${req.body.totalAmount}</p>
+      `;
 
       await transporter.sendMail({
         from: fromAddress,
         to: toAddress,
-        subject: 'New Booking Submission',
-        text: lines.join('\n')
+        subject: `New Booking Confirmation - ${booking.bookingId}`,
+        text: lines.join('\n'),
+        html
       });
     } catch (mailErr) {
       console.error('Booking email send error:', mailErr);
