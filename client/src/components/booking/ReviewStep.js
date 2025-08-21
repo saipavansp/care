@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FiArrowLeft, FiCheck, FiEdit2, FiUser, FiAlertCircle } from 'react-icons/fi';
 import { formatDate, formatCurrency } from '../../utils/helpers';
@@ -9,6 +9,8 @@ import toast from 'react-hot-toast';
 const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated }) => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
+  const [scrolledToEnd, setScrolledToEnd] = useState(false);
+  const termsRef = useRef(null);
   
   const handleSubmit = () => {
     if (!termsAccepted) {
@@ -25,7 +27,6 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
         { label: 'Name', value: data.patientName },
         { label: 'Age', value: `${data.patientAge} years` },
         { label: 'Gender', value: data.patientGender },
-        { label: 'Medical Conditions', value: data.medicalConditions || 'None specified' }
       ]
     },
     {
@@ -33,8 +34,8 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
       items: [
         { label: 'Hospital', value: data.hospital },
         { label: 'Hospital Address', value: data.hospitalAddress },
-        { label: 'Doctor', value: data.doctor },
-        { label: 'Department', value: data.department },
+        { label: 'Doctor', value: data.doctor || '—' },
+        { label: 'Department', value: data.department || '—' },
         { label: 'Date', value: formatDate(data.appointmentDate) },
         { label: 'Time', value: data.appointmentTime }
       ]
@@ -45,13 +46,6 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
         { label: 'Address', value: data.pickupAddress },
         { label: 'City', value: `${data.city}, ${data.state}` },
         { label: 'PIN Code', value: data.pincode }
-      ]
-    },
-    {
-      title: 'Preferences',
-      items: [
-        { label: 'Language', value: data.preferredLanguage },
-        { label: 'Special Requirements', value: data.specialRequirements || 'None' }
       ]
     }
   ];
@@ -137,15 +131,27 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
           </div>
         </div>
 
-        {/* Terms & Conditions */}
+        {/* Booking Terms - must scroll to end to enable acceptance */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <h4 className="font-medium text-yellow-900 mb-2">Important Information</h4>
-          <ul className="text-sm text-yellow-800 space-y-1">
-            <li>• Companion will arrive 30 minutes before appointment time</li>
-            <li>• Service includes door-to-door pickup and drop</li>
-            <li>• Digital visit summary will be shared within 2 hours</li>
-            <li>• Cancellation allowed up to 2 hours before appointment</li>
-          </ul>
+          <h4 className="font-medium text-yellow-900 mb-2">Please read and confirm these booking terms</h4>
+          <div
+            ref={termsRef}
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              if (el.scrollTop + el.clientHeight >= el.scrollHeight - 4) setScrolledToEnd(true);
+            }}
+            className="max-h-48 overflow-y-auto pr-2 text-sm text-yellow-800 space-y-2"
+          >
+            <p>• No Emergency Cases – KinPin is not an emergency service. For urgent/critical care, call 108 or visit the nearest emergency.</p>
+            <p>• Doctor Interaction Preference – Escorts will only interact with doctors if you (or the patient) permit them; otherwise they will remain outside the consultation room.</p>
+            <p>• Non‑Medical Support – Escorts are not doctors/nurses and do not provide medical advice, diagnosis, or treatment.</p>
+            <p>• Patient Responsibility – You confirm the patient is medically stable and fit for non‑emergency escort assistance.</p>
+            <p>• Liability Limitation – KinPin is not responsible for medical outcomes, delays, or hospital/doctor actions.</p>
+            <p>• Respectful Conduct – You agree to maintain respectful behavior towards the escort. Any harassment, abuse, or unsafe conduct may result in immediate cancellation without refund.</p>
+          </div>
+          {!scrolledToEnd && (
+            <div className="mt-2 text-xs text-yellow-700">Scroll to the bottom to enable the confirmation checkbox.</div>
+          )}
         </div>
 
         {/* Login/Payment Section */}
@@ -195,10 +201,10 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
                 className={`mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded ${
                   showTermsError ? 'border-red-500 ring-1 ring-red-500' : ''
                 }`}
+                disabled={!scrolledToEnd}
               />
               <label htmlFor="terms" className="text-sm text-gray-700">
-                I confirm that all the information provided is accurate and I agree to the 
-                booking terms and conditions
+                I have read and agree to the booking terms and conditions above, and I confirm all information provided is accurate.
               </label>
             </div>
             
@@ -235,7 +241,7 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
             ) : (
               <>
                 <FiCheck className="mr-2" />
-                Proceed to Payment
+                Confirm Booking
               </>
             )}
           </button>
