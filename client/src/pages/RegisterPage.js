@@ -210,33 +210,29 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* WhatsApp Number (Optional) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                WhatsApp Number <span className="text-gray-500">(Optional)</span>
+            {/* Terms Checkbox */}
+            <div className="flex items-start">
+              <input
+                type="checkbox"
+                {...register('terms', {
+                  required: 'You must agree to the terms'
+                })}
+                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded mt-0.5"
+              />
+              <label className="ml-2 text-sm text-gray-600">
+                I agree to the{' '}
+                <Link to="/terms" className="text-primary hover:text-primary-dark">
+                  Terms of Service
+                </Link>{' '}
+                and{' '}
+                <Link to="/privacy" className="text-primary hover:text-primary-dark">
+                  Privacy Policy
+                </Link>
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiPhone className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="tel"
-                  {...register('whatsapp', {
-                    pattern: {
-                      value: PHONE_REGEX,
-                      message: 'Please enter a valid 10-digit phone number'
-                    }
-                  })}
-                  className="input-field pl-10"
-                  placeholder="WhatsApp number for updates"
-                />
-              </div>
-              {errors.whatsapp && (
-                <p className="error-text">{errors.whatsapp.message}</p>
-              )}
             </div>
-
-            {/* Terms Checkbox removed as not required */}
+            {errors.terms && (
+              <p className="error-text">{errors.terms.message}</p>
+            )}
 
             {/* Submit Button */}
             <button
