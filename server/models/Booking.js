@@ -60,7 +60,7 @@ const bookingSchema = new mongoose.Schema({
   },
   department: {
     type: String,
-    required: true,
+    required: false,
     trim: true
   },
   appointmentDate: {
