@@ -58,6 +58,10 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin', 'companion'],
     default: 'user'
   },
+  phoneVerified: {
+    type: Boolean,
+    default: false
+  },
   isActive: {
     type: Boolean,
     default: true

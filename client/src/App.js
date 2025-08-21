@@ -17,6 +17,7 @@ import AboutPage from './pages/AboutPage';
 import PricingPage from './pages/PricingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import DashboardPage from './pages/DashboardPage';
 import BookingDetailsPage from './pages/BookingDetailsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -48,6 +49,7 @@ function AppContent() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           
           {/* Coming Soon Pages */}
           <Route path="/corporate-plans" element={<CorporatePlansPage />} />

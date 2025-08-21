@@ -233,6 +233,36 @@ const authService = {
   changePassword: async (passwordData) => {
     const response = await api.put('/auth/change-password', passwordData);
     return response.data;
+  },
+
+  // Send OTP for flows (register/password_reset)
+  sendOtp: async ({ phone, purpose }) => {
+    const response = await api.post('/auth/otp/send', { phone, purpose });
+    return response.data;
+  },
+
+  // Verify OTP for flows (register/password_reset)
+  verifyOtp: async ({ phone, purpose, code }) => {
+    const response = await api.post('/auth/otp/verify', { phone, purpose, code });
+    return response.data;
+  },
+
+  // Forgot password: request code via chosen channel (sms|email)
+  forgotPassword: async ({ phone, channel }) => {
+    const response = await api.post('/auth/password/forgot', { phone, channel });
+    return response.data;
+  },
+
+  // Verify password reset code (returns resetToken)
+  verifyPasswordCode: async ({ phone, channel, code }) => {
+    const response = await api.post('/auth/password/verify', { phone, channel, code });
+    return response.data;
+  },
+
+  // Reset password using resetToken
+  resetPassword: async ({ resetToken, newPassword }) => {
+    const response = await api.post('/auth/password/reset', { resetToken, newPassword });
+    return response.data;
   }
 };
 
