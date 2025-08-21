@@ -236,29 +236,7 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* Terms Checkbox */}
-            <div className="flex items-start">
-              <input
-                type="checkbox"
-                {...register('terms', {
-                  required: 'You must agree to the terms'
-                })}
-                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded mt-0.5"
-              />
-              <label className="ml-2 text-sm text-gray-600">
-                I agree to the{' '}
-                <Link to="/terms" className="text-primary hover:text-primary-dark">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link to="/privacy" className="text-primary hover:text-primary-dark">
-                  Privacy Policy
-                </Link>
-              </label>
-            </div>
-            {errors.terms && (
-              <p className="error-text">{errors.terms.message}</p>
-            )}
+            {/* Terms Checkbox removed as not required */}
 
             {/* Submit Button */}
             <button
