@@ -24,7 +24,7 @@ const ForgotPasswordPage = () => {
     try {
       const cleanPhone = data.phone.toString().trim().replace(/\s+/g, '');
       setPhone(cleanPhone);
-      await authService.forgotPassword({ phone: cleanPhone, channel });
+      await authService.forgotPassword({ phone: cleanPhone, channel, email: data.email });
       setStep(2);
     } catch (e) {
       // no-op, toast is handled globally if needed
@@ -81,6 +81,24 @@ const ForgotPasswordPage = () => {
               </div>
               {errors.phone && <p className="error-text">{errors.phone.message}</p>}
             </div>
+
+            {channel === 'email' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Registered Email</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiMail className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="email"
+                    {...register('email', { required: 'Email is required for email verification' })}
+                    className="input-field pl-10"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                {errors.email && <p className="error-text">{errors.email.message}</p>}
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Send code via</label>

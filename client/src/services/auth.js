@@ -248,8 +248,8 @@ const authService = {
   },
 
   // Forgot password: request code via chosen channel (sms|email)
-  forgotPassword: async ({ phone, channel }) => {
-    const response = await api.post('/auth/password/forgot', { phone, channel });
+  forgotPassword: async ({ phone, channel, email }) => {
+    const response = await api.post('/auth/password/forgot', { phone, channel, email });
     return response.data;
   },
 

@@ -359,10 +359,11 @@ router.put('/change-password', auth, [
 router.post('/password/forgot', [
   body('phone').trim().notEmpty().withMessage('Phone is required')
     .matches(/^[6-9]\d{9}$/).withMessage('Please enter a valid Indian phone number'),
-  body('channel').optional().isIn(['sms', 'email']).withMessage('Invalid channel')
+  body('channel').optional().isIn(['sms', 'email']).withMessage('Invalid channel'),
+  body('email').optional().isEmail().withMessage('Please enter a valid email')
 ], validate, async (req, res) => {
   try {
-    const { phone, channel } = req.body;
+    const { phone, channel, email } = req.body;
     const user = await User.findOne({ phone });
     if (!user) {
       return res.status(404).json({ message: 'No account found for this phone' });
@@ -370,6 +371,15 @@ router.post('/password/forgot', [
 
     // Default channel to sms if not chosen
     const chosen = channel || 'sms';
+
+    // If email channel selected, require email to match user record (case-insensitive)
+    if (chosen === 'email') {
+      const provided = (email || '').trim().toLowerCase();
+      const saved = (user.email || '').trim().toLowerCase();
+      if (!provided || !saved || provided !== saved) {
+        return res.status(400).json({ message: 'Email does not match our records' });
+      }
+    }
 
     // Generate OTP
     const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -396,7 +406,7 @@ router.post('/password/forgot', [
         auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
       });
       await transporter.sendMail({
-        from: process.env.EMAIL_USER,
+        from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
         to: user.email,
         subject: 'Password Reset OTP',
         text: `Your password reset OTP is ${code}. It is valid for 5 minutes.`,
