@@ -11,6 +11,7 @@ const ForgotPasswordPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [channel, setChannel] = useState('email');
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [resetToken, setResetToken] = useState('');
 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -22,9 +23,15 @@ const ForgotPasswordPage = () => {
   const onSend = async (data) => {
     setIsLoading(true);
     try {
-      const cleanPhone = data.phone.toString().trim().replace(/\s+/g, '');
-      setPhone(cleanPhone);
-      await authService.forgotPassword({ phone: cleanPhone, channel, email: data.email });
+      if (channel === 'email') {
+        const providedEmail = (data.email || '').toString().trim().toLowerCase();
+        setEmail(providedEmail);
+        await authService.forgotPassword({ channel: 'email', email: providedEmail });
+      } else {
+        const cleanPhone = (data.phone || '').toString().trim().replace(/\s+/g, '');
+        setPhone(cleanPhone);
+        await authService.forgotPassword({ channel: 'sms', phone: cleanPhone });
+      }
       setStep(2);
     } catch (e) {
       // no-op, toast is handled globally if needed
@@ -36,7 +43,10 @@ const ForgotPasswordPage = () => {
   const onVerify = async (data) => {
     setIsLoading(true);
     try {
-      const res = await authService.verifyPasswordCode({ phone, channel, code: data.code });
+      const payload = channel === 'email'
+        ? { email, channel: 'email', code: data.code }
+        : { phone, channel: 'sms', code: data.code };
+      const res = await authService.verifyPasswordCode(payload);
       setResetToken(res.resetToken);
       setStep(3);
     } catch (e) {
@@ -134,7 +144,13 @@ const ForgotPasswordPage = () => {
             </div>
             <div className="flex justify-between text-sm text-gray-600">
               <button type="button" onClick={() => setStep(1)} className="text-primary">Change method</button>
-              <button type="button" onClick={() => onSend({ phone })} className="text-primary">Resend</button>
+              <button
+                type="button"
+                onClick={() => onSend(channel === 'email' ? { email } : { phone })}
+                className="text-primary"
+              >
+                Resend
+              </button>
             </div>
             <button type="submit" disabled={isLoading} className="w-full btn-primary flex items-center justify-center">{isLoading ? <LoadingSpinner size="small" color="white" /> : 'Verify'}</button>
           </form>
