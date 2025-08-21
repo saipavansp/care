@@ -7,7 +7,6 @@ import BookingProgress from '../components/booking/BookingProgress';
 import PatientDetailsStep from '../components/booking/PatientDetailsStep';
 import AppointmentDetailsStep from '../components/booking/AppointmentDetailsStep';
 import PickupLocationStep from '../components/booking/PickupLocationStep';
-import PreferencesStep from '../components/booking/PreferencesStep';
 import PackageSelectionStep from '../components/booking/PackageSelectionStep';
 import ReviewStep from '../components/booking/ReviewStep';
 import bookingService from '../services/booking';
@@ -44,9 +43,7 @@ const BookingPage = () => {
     pickupAddress: '',
     pickupCoordinates: null,
     
-    // Preferences
-    preferredLanguage: 'Hindi',
-    specialRequirements: '',
+    // Preferences removed
     
     // Package Details
     packageId: 'single',
@@ -66,8 +63,7 @@ const BookingPage = () => {
     { number: 2, title: 'Appointment' },
     { number: 3, title: 'Pickup Location' },
     { number: 4, title: 'Select Package' },
-    { number: 5, title: 'Preferences' },
-    { number: 6, title: 'Review & Pay' }
+    { number: 5, title: 'Review & Pay' }
   ];
 
   const updateBookingData = (data) => {
@@ -169,15 +165,6 @@ const BookingPage = () => {
           />
         );
       case 5:
-        return (
-          <PreferencesStep
-            data={bookingData}
-            updateData={updateBookingData}
-            onNext={handleNext}
-            onPrevious={handlePrevious}
-          />
-        );
-      case 6:
         return (
           <ReviewStep
             data={bookingData}

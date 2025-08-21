@@ -13,8 +13,7 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
     defaultValues: {
       patientName: data.patientName,
       patientAge: data.patientAge,
-      patientGender: data.patientGender,
-      medicalConditions: data.medicalConditions
+      patientGender: data.patientGender
     }
   });
 
@@ -121,26 +120,7 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
           </div>
         </div>
 
-        {/* Medical Conditions */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Medical Conditions / Special Needs
-          </label>
-          <div className="relative">
-            <div className="absolute top-3 left-3 pointer-events-none">
-              <FiHeart className="h-5 w-5 text-gray-400" />
-            </div>
-            <textarea
-              {...register('medicalConditions')}
-              rows={4}
-              className="input-field pl-10 resize-none"
-              placeholder="Please mention any medical conditions, mobility issues, or special requirements (e.g., wheelchair assistance, oxygen support, etc.)"
-            />
-          </div>
-          <p className="text-sm text-gray-500 mt-1">
-            This helps us assign the right companion for your needs
-          </p>
-        </div>
+        {/* Medical Conditions removed as requested */}
 
         {/* Navigation */}
         <div className="flex justify-end pt-6">

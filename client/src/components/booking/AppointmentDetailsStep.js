@@ -220,29 +220,26 @@ const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
           )}
         </div>
 
-        {/* Doctor Name */}
+        {/* Doctor Name (optional) */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Doctor Name *
+            Doctor Name (optional)
           </label>
           <input
             type="text"
-            {...register('doctor', { required: 'Doctor name is required' })}
+            {...register('doctor')}
             className="input-field"
             placeholder="Dr. "
           />
-          {errors.doctor && (
-            <p className="error-text">{errors.doctor.message}</p>
-          )}
         </div>
 
-        {/* Department */}
+        {/* Department (optional) */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Department *
+            Department (optional)
           </label>
           <select
-            {...register('department', { required: 'Please select a department' })}
+            {...register('department')}
             className="input-field"
           >
             <option value="">Select Department</option>
@@ -250,9 +247,6 @@ const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
               <option key={dept} value={dept}>{dept}</option>
             ))}
           </select>
-          {errors.department && (
-            <p className="error-text">{errors.department.message}</p>
-          )}
         </div>
 
         {/* Appointment Date */}
