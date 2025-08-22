@@ -112,7 +112,7 @@ export const HOW_IT_WORKS_STEPS = [
   }
 ];
 
-export const WHATSAPP_NUMBER = '+919876543210';
+export const WHATSAPP_NUMBER = '+919966255644';
 export const WHATSAPP_MESSAGE = 'Hi, I would like to know more about Kinpin services.';
 
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
