@@ -150,7 +150,10 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
             <p>• Respectful Conduct – You agree to maintain respectful behavior towards the escort. Any harassment, abuse, or unsafe conduct may result in immediate cancellation without refund.</p>
           </div>
           {!scrolledToEnd && (
-            <div className="mt-2 text-xs text-yellow-700">Scroll to the bottom to enable the confirmation checkbox.</div>
+            <div className="mt-2 text-xs text-red-600 flex items-center" aria-live="polite">
+              <FiAlertCircle className="mr-1" />
+              <span>Scroll to the bottom to enable the confirmation checkbox.</span>
+            </div>
           )}
         </div>
 
@@ -207,6 +210,12 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
                 I have read and agree to the booking terms and conditions above, and I confirm all information provided is accurate.
               </label>
             </div>
+            {!scrolledToEnd && (
+              <div className="text-xs text-red-600 mt-2 flex items-center" aria-live="polite">
+                <FiAlertCircle className="mr-1" />
+                <span>Action required: scroll the terms above to enable the checkbox.</span>
+              </div>
+            )}
             
             {showTermsError && (
               <div className="flex items-center text-red-500 text-sm">
