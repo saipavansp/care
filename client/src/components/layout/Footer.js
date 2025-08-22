@@ -49,11 +49,11 @@ const Footer = () => {
             </p>
             <div className="space-y-2">
               <a 
-                href="tel:+919876543210" 
+                href="tel:+919966255644" 
                 className="flex items-center space-x-2 text-gray-400 hover:text-primary transition-colors"
               >
                 <FiPhone className="w-4 h-4" />
-                <span>+91 9876543210</span>
+                <span>+91 9966255644</span>
               </a>
               <a 
                 href="mailto:support@kinpin.in" 
@@ -163,7 +163,7 @@ const Footer = () => {
                 </a>
               ))}
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919966255644"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
