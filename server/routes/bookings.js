@@ -69,8 +69,17 @@ router.post('/create', auth, [
     const booking = new Booking(bookingData);
     await booking.save();
 
-    // Fire-and-forget: append to Google Sheets if enabled
-    try { sheets.appendBookingRow(booking, req.user, req.body); } catch {}
+    // Append to Google Sheets if enabled
+    try {
+      const ok = await sheets.appendBookingRow(booking, req.user, req.body);
+      if (!ok) {
+        console.error('Sheets append (booking) failed for bookingId:', booking.bookingId);
+      } else {
+        console.log('Sheets append (booking) OK for bookingId:', booking.bookingId);
+      }
+    } catch (e) {
+      console.error('Sheets append (booking) exception:', e?.message || e);
+    }
 
     // Send booking details via email to the specified recipient
     try {

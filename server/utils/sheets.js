@@ -46,9 +46,12 @@ async function getSheetsClient() {
 
 async function appendRow(rangeA1, values) {
   try {
-    const sheets = await getSheetsClient();
-    if (!sheets) return false;
-    await sheets.spreadsheets.values.append({
+    const sheetsClient = await getSheetsClient();
+    if (!sheetsClient) {
+      console.error('Sheets: client not initialized or disabled');
+      return false;
+    }
+    await sheetsClient.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: rangeA1,
       valueInputOption: 'USER_ENTERED',

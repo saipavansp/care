@@ -90,8 +90,17 @@ router.post('/register', [
     // Generate token
     const token = generateToken(user._id);
 
-    // Fire-and-forget: append to Google Sheets if enabled
-    try { sheets.appendUserRow(user); } catch {}
+    // Append to Google Sheets if enabled
+    try {
+      const ok = await sheets.appendUserRow(user);
+      if (!ok) {
+        console.error('Sheets append (user) failed userId:', user._id?.toString());
+      } else {
+        console.log('Sheets append (user) OK userId:', user._id?.toString());
+      }
+    } catch (e) {
+      console.error('Sheets append (user) exception:', e?.message || e);
+    }
 
     // Fire-and-forget: send ops email (no password)
     try {
