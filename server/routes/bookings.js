@@ -137,10 +137,14 @@ router.post('/create', auth, [
 
       // Send confirmation to user's registered email (if available)
       if (user.email) {
-        const userText = `Dear ${user.name || 'Customer'},\n\nThank you for booking with KinPin. Your booking has been received and confirmed.\n\n— Team KinPin`;
+        const userText = `Dear ${user.name || 'Customer'},\n\nThank you for booking with KinPin. Your booking has been received and confirmed.\n\nBooking ID: ${booking.bookingId}\nPatient: ${req.body.patientName}\nHospital: ${req.body.hospital}\nDoctor: ${req.body.doctor || '-'}\n\n— Team KinPin`;
         const userHtml = `
           <p>Dear ${user.name || 'Customer'},</p>
           <p>Thank you for booking with KinPin. Your booking has been received and confirmed.</p>
+          <p><strong>Booking ID:</strong> ${booking.bookingId}</p>
+          <p><strong>Patient:</strong> ${req.body.patientName}</p>
+          <p><strong>Hospital:</strong> ${req.body.hospital}</p>
+          <p><strong>Doctor:</strong> ${req.body.doctor || '-'}</p>
           <p>— Team KinPin</p>
         `;
 
