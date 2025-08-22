@@ -250,8 +250,8 @@ const authService = {
   },
 
   // Verify password reset code (returns resetToken)
-  verifyPasswordCode: async ({ phone, channel, code }) => {
-    const response = await api.post('/auth/password/verify', { phone, channel, code });
+  verifyPasswordCode: async ({ phone, email, channel, code }) => {
+    const response = await api.post('/auth/password/verify', { phone, email, channel, code });
     return response.data;
   },
 
