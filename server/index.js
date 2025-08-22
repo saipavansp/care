@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 // Import routes
@@ -44,8 +45,15 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
-// (Temporarily disabled) Rate limiting
-// app.use('/api', (req, res, next) => req.method === 'OPTIONS' ? next() : limiter(req, res, next));
+
+// Safe rate limiting: skip OPTIONS to not interfere with CORS preflight
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300, // 300 requests per IP per window
+  standardHeaders: true,
+  legacyHeaders: false
+});
+app.use('/api', (req, res, next) => req.method === 'OPTIONS' ? next() : apiLimiter(req, res, next));
 
 // Routes
 app.use('/api/auth', authRoutes);
