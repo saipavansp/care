@@ -24,7 +24,7 @@ const authService = {
         phone: phone,
         // Ensure these fields are included and formatted correctly
         name: userData.name?.trim(),
-        email: userData.email?.trim() || undefined, // Make it undefined if empty
+        email: userData.email?.trim(),
         whatsapp: userData.whatsapp?.trim() || undefined,
         // Remove any fields that shouldn't be sent
         confirmPassword: undefined,
@@ -82,6 +82,16 @@ const authService = {
     } catch (error) {
       throw error;
     }
+  },
+  // Send email OTP for registration
+  sendEmailOtp: async (email) => {
+    const response = await api.post('/auth/email/send', { email, purpose: 'register' });
+    return response.data;
+  },
+  // Verify email OTP for registration
+  verifyEmailOtp: async ({ email, code }) => {
+    const response = await api.post('/auth/email/verify', { email, code, purpose: 'register' });
+    return response.data;
   },
 
   // Login user

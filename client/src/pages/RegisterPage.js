@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { FiEye, FiEyeOff, FiPhone, FiLock, FiUser, FiMail } from 'react-icons/fi';
+import authService from '../services/auth';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { PHONE_REGEX, EMAIL_REGEX } from '../utils/constants';
@@ -11,6 +12,9 @@ import LinkedInStyleLogo from '../components/common/LinkedInStyleLogo';
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [emailOtp, setEmailOtp] = useState('');
+  const [preVerifiedToken, setPreVerifiedToken] = useState('');
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
 
@@ -26,8 +30,39 @@ const RegisterPage = () => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-    const result = await registerUser(data);
+    // Require email OTP verification prior to account creation
+    if (!preVerifiedToken) {
+      setIsLoading(false);
+      setError('root', { type: 'manual', message: 'Please verify your email OTP before creating account' });
+      return;
+    }
+
+    const result = await registerUser({ ...data, preVerifiedToken });
     setIsLoading(false);
+  const handleSendOtp = async () => {
+    const emailValue = watch('email');
+    if (!emailValue) {
+      setError('email', { type: 'manual', message: 'Email is required for OTP' });
+      return;
+    }
+    try {
+      await authService.sendEmailOtp(emailValue);
+      setOtpSent(true);
+    } catch (e) {
+      // handled globally
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    const emailValue = watch('email');
+    if (!emailValue || !emailOtp) return;
+    try {
+      const res = await authService.verifyEmailOtp({ email: emailValue, code: emailOtp });
+      setPreVerifiedToken(res.preVerifiedToken);
+    } catch (e) {
+      // handled globally
+    }
+  };
 
     if (result.success) {
       navigate('/dashboard');
@@ -121,10 +156,10 @@ const RegisterPage = () => {
               )}
             </div>
 
-            {/* Email Field (Optional) */}
+            {/* Email Field (Mandatory with OTP) */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address <span className="text-gray-500">(Optional)</span>
+                Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -133,6 +168,7 @@ const RegisterPage = () => {
                 <input
                   type="email"
                   {...register('email', {
+                    required: 'Email is required',
                     pattern: {
                       value: EMAIL_REGEX,
                       message: 'Please enter a valid email'
@@ -145,6 +181,18 @@ const RegisterPage = () => {
               {errors.email && (
                 <p className="error-text">{errors.email.message}</p>
               )}
+              <div className="flex items-center gap-2 mt-2">
+                <button type="button" onClick={handleSendOtp} className="btn-secondary text-sm">Send OTP</button>
+                <input
+                  type="text"
+                  value={emailOtp}
+                  onChange={(e) => setEmailOtp(e.target.value)}
+                  className="input-field text-sm"
+                  placeholder="Enter OTP"
+                />
+                <button type="button" onClick={handleVerifyOtp} className="btn-primary text-sm">Verify</button>
+                {preVerifiedToken && <span className="text-green-600 text-sm">Verified</span>}
+              </div>
             </div>
 
             {/* Password Field */}
