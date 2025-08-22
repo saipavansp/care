@@ -28,17 +28,6 @@ const RegisterPage = () => {
 
   const password = watch('password');
 
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    // Require email OTP verification prior to account creation
-    if (!preVerifiedToken) {
-      setIsLoading(false);
-      setError('root', { type: 'manual', message: 'Please verify your email OTP before creating account' });
-      return;
-    }
-
-    const result = await registerUser({ ...data, preVerifiedToken });
-    setIsLoading(false);
   const handleSendOtp = async () => {
     const emailValue = watch('email');
     if (!emailValue) {
@@ -64,6 +53,17 @@ const RegisterPage = () => {
     }
   };
 
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+    // Require email OTP verification prior to account creation
+    if (!preVerifiedToken) {
+      setIsLoading(false);
+      setError('root', { type: 'manual', message: 'Please verify your email OTP before creating account' });
+      return;
+    }
+
+    const result = await registerUser({ ...data, preVerifiedToken });
+    setIsLoading(false);
     if (result.success) {
       navigate('/dashboard');
     } else {
