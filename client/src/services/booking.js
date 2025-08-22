@@ -3,7 +3,32 @@ import api from './api';
 const bookingService = {
   // Create new booking
   createBooking: async (bookingData) => {
-    const response = await api.post('/bookings/create', bookingData);
+    const normalized = { ...bookingData };
+    // Ensure appointmentDate is ISO8601 string
+    if (normalized.appointmentDate instanceof Date) {
+      normalized.appointmentDate = normalized.appointmentDate.toISOString();
+    }
+    // Coerce numeric fields
+    if (typeof normalized.patientAge === 'string') {
+      normalized.patientAge = parseInt(normalized.patientAge, 10);
+    }
+    if (typeof normalized.totalAmount === 'string') {
+      normalized.totalAmount = parseFloat(normalized.totalAmount);
+    }
+    // Fallback pickupAddress if missing
+    if (!normalized.pickupAddress) {
+      const parts = [
+        normalized.addressLine1,
+        normalized.addressLine2,
+        normalized.landmark && `Near ${normalized.landmark}`,
+        normalized.city,
+        normalized.state,
+        normalized.pincode
+      ].filter(Boolean);
+      if (parts.length) normalized.pickupAddress = parts.join(', ');
+    }
+
+    const response = await api.post('/bookings/create', normalized);
     return response.data;
   },
 
