@@ -134,6 +134,24 @@ router.post('/create', auth, [
         text: lines.join('\n'),
         html
       });
+
+      // Send confirmation to user's registered email (if available)
+      if (user.email) {
+        const userText = `Dear ${user.name || 'Customer'},\n\nThank you for booking with KinPin. Your booking has been received and confirmed.\n\n— Team KinPin`;
+        const userHtml = `
+          <p>Dear ${user.name || 'Customer'},</p>
+          <p>Thank you for booking with KinPin. Your booking has been received and confirmed.</p>
+          <p>— Team KinPin</p>
+        `;
+
+        await transporter.sendMail({
+          from: fromAddress,
+          to: user.email,
+          subject: 'Your KinPin Booking Confirmation',
+          text: userText,
+          html: userHtml
+        });
+      }
     } catch (mailErr) {
       console.error('Booking email send error:', mailErr);
       // Do not fail the booking if email fails
