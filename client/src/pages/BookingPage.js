@@ -73,12 +73,14 @@ const BookingPage = () => {
   const handleNext = () => {
     if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch {}
     }
   };
 
   const handlePrevious = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch {}
     }
   };
 

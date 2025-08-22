@@ -27,44 +27,7 @@ router.post('/create', auth, [
     // Confirm booking immediately (no online payments for now)
     bookingData.status = 'confirmed';
 
-    // Check for conflicting bookings
-    const appointmentDate = new Date(req.body.appointmentDate);
-    appointmentDate.setHours(0, 0, 0, 0);
-    
-    const existingBookings = await Booking.find({
-      userId: req.userId,
-      appointmentDate: {
-        $gte: appointmentDate,
-        $lt: new Date(appointmentDate.getTime() + 24 * 60 * 60 * 1000)
-      },
-      status: { $nin: ['cancelled', 'completed'] }
-    });
-
-    // Check if there's a conflict
-    if (existingBookings.length > 0) {
-      // Check if it's the same patient and same time
-      const hasConflict = existingBookings.some(booking => 
-        booking.patientName === req.body.patientName && 
-        booking.appointmentTime === req.body.appointmentTime
-      );
-
-      if (hasConflict) {
-        return res.status(400).json({ 
-          message: 'You already have a booking for this patient at this time. Please choose a different time.' 
-        });
-      }
-
-      // Check if bookings are at the same time (even for different patients)
-      const hasTimeConflict = existingBookings.some(booking => 
-        booking.appointmentTime === req.body.appointmentTime
-      );
-
-      if (hasTimeConflict) {
-        return res.status(400).json({ 
-          message: 'You already have another appointment at this time. Please choose a different time slot.' 
-        });
-      }
-    }
+    // Allow multiple bookings without same-day/time conflict checks (per requirement)
 
     const booking = new Booking(bookingData);
     await booking.save();
