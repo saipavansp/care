@@ -15,6 +15,7 @@ const RegisterPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [emailOtp, setEmailOtp] = useState('');
   const [preVerifiedToken, setPreVerifiedToken] = useState('');
+  const [otpNotice, setOtpNotice] = useState('');
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ const RegisterPage = () => {
     try {
       await authService.sendEmailOtp(emailValue);
       setOtpSent(true);
+      setOtpNotice(`OTP sent to ${emailValue}. Check your inbox and spam.`);
     } catch (e) {
       // handled globally
     }
@@ -180,6 +182,9 @@ const RegisterPage = () => {
               </div>
               {errors.email && (
                 <p className="error-text">{errors.email.message}</p>
+              )}
+              {otpNotice && (
+                <p className="text-sm text-gray-600 mt-1">{otpNotice}</p>
               )}
               <div className="flex items-center gap-2 mt-2">
                 <button type="button" onClick={handleSendOtp} className="btn-secondary text-sm">Send OTP</button>

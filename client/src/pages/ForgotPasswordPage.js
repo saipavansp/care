@@ -13,6 +13,7 @@ const ForgotPasswordPage = () => {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [resetToken, setResetToken] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { register: registerCode, handleSubmit: handleSubmitCode, formState: { errors: errorsCode } } = useForm();
@@ -62,7 +63,10 @@ const ForgotPasswordPage = () => {
     setIsLoading(true);
     try {
       await authService.resetPassword({ resetToken, newPassword: data.newPassword });
-      window.location.href = '/login';
+      setSuccessMessage('Password changed successfully. Redirecting to login...');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1500);
     } catch (e) {
       // no-op
     } finally {
@@ -163,6 +167,11 @@ const ForgotPasswordPage = () => {
 
         {step === 3 && (
           <form onSubmit={handleSubmitReset(onReset)} className="space-y-6">
+            {successMessage && (
+              <div className="bg-green-50 text-green-700 p-3 rounded-lg text-sm">
+                {successMessage}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
               <input type="password" {...registerReset('newPassword', { required: 'New password is required', minLength: { value: 6, message: 'Min 6 characters' } })} className="input-field" />
