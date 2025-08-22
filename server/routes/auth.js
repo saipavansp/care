@@ -7,6 +7,7 @@ const validate = require('../middleware/validate');
 const Otp = require('../models/Otp');
 const bcrypt = require('bcryptjs');
 const smsProvider = require('../utils/smsProvider');
+const nodemailer = require('nodemailer');
 
 const router = express.Router();
 
@@ -51,10 +52,21 @@ router.post('/register', [
   body('phone').trim().notEmpty().withMessage('Phone is required')
     .matches(/^[6-9]\d{9}$/).withMessage('Please enter a valid Indian phone number'),
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-  body('email').optional().isEmail().withMessage('Please enter a valid email')
+  body('email').isEmail().withMessage('Please enter a valid email'),
+  body('preVerifiedToken').notEmpty().withMessage('Email verification is required')
 ], validate, async (req, res) => {
   try {
-    const { name, phone, email, password, whatsapp } = req.body;
+    const { name, phone, email, password, whatsapp, preVerifiedToken } = req.body;
+
+    // Verify the preVerifiedToken matches email and purpose
+    try {
+      const tokenPayload = jwt.verify(preVerifiedToken, process.env.JWT_SECRET || 'temp_secret');
+      if (tokenPayload.type !== 'preverified_register' || tokenPayload.email?.toLowerCase() !== (email || '').toLowerCase()) {
+        return res.status(400).json({ message: 'Invalid email verification token' });
+      }
+    } catch (e) {
+      return res.status(400).json({ message: 'Invalid or expired email verification token' });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ phone });
@@ -85,6 +97,82 @@ router.post('/register', [
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ message: 'Error registering user' });
+  }
+});
+
+// Send email OTP for registration
+router.post('/email/send', [
+  body('email').isEmail().withMessage('Please enter a valid email'),
+  body('purpose').optional().isIn(['register']).withMessage('Invalid purpose')
+], validate, async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Generate OTP
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const codeHash = await bcrypt.hash(code, 10);
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+    await Otp.create({
+      subject: (email || '').toLowerCase(),
+      purpose: 'register',
+      channel: 'email',
+      codeHash,
+      expiresAt,
+    });
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: Number(process.env.EMAIL_PORT || 587),
+      secure: false,
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+      to: email,
+      subject: 'Your KinPin Registration OTP',
+      text: `Your OTP is ${code}. It is valid for 5 minutes.`
+    });
+
+    res.json({ message: 'OTP sent to email' });
+  } catch (error) {
+    console.error('Send email OTP error:', error);
+    res.status(500).json({ message: 'Failed to send email OTP' });
+  }
+});
+
+// Verify email OTP for registration
+router.post('/email/verify', [
+  body('email').isEmail().withMessage('Please enter a valid email'),
+  body('code').trim().isLength({ min: 6, max: 6 }).withMessage('Invalid code'),
+  body('purpose').optional().isIn(['register']).withMessage('Invalid purpose')
+], validate, async (req, res) => {
+  try {
+    const email = (req.body.email || '').toLowerCase();
+    const { code } = req.body;
+
+    const otp = await Otp.findOne({ subject: email, purpose: 'register', channel: 'email', consumed: false }).sort({ createdAt: -1 });
+    if (!otp) return res.status(400).json({ message: 'No OTP found. Please request a new one.' });
+    if (otp.expiresAt < new Date()) return res.status(400).json({ message: 'OTP expired. Please request a new one.' });
+    if (otp.attempts >= otp.maxAttempts) return res.status(429).json({ message: 'Too many attempts. Please request a new OTP.' });
+
+    const isValid = await bcrypt.compare(code, otp.codeHash);
+    otp.attempts += 1;
+    if (!isValid) {
+      await otp.save();
+      return res.status(400).json({ message: 'Invalid OTP' });
+    }
+
+    otp.consumed = true;
+    await otp.save();
+
+    // Issue short-lived pre-verified token for registration
+    const preVerifiedToken = jwt.sign({ email, type: 'preverified_register' }, process.env.JWT_SECRET || 'temp_secret', { expiresIn: '15m' });
+    res.json({ message: 'Email verified', preVerifiedToken });
+  } catch (error) {
+    console.error('Verify email OTP error:', error);
+    res.status(500).json({ message: 'Failed to verify email OTP' });
   }
 });
 
