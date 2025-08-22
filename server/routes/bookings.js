@@ -3,6 +3,7 @@ const { body, query } = require('express-validator');
 const Booking = require('../models/Booking');
 const { auth, adminAuth, companionAuth } = require('../middleware/auth');
 const validate = require('../middleware/validate');
+const sheets = require('../utils/sheets');
 
 const router = express.Router();
 
@@ -67,6 +68,9 @@ router.post('/create', auth, [
 
     const booking = new Booking(bookingData);
     await booking.save();
+
+    // Fire-and-forget: append to Google Sheets if enabled
+    try { sheets.appendBookingRow(booking, req.user, req.body); } catch {}
 
     // Send booking details via email to the specified recipient
     try {

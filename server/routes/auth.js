@@ -8,6 +8,7 @@ const Otp = require('../models/Otp');
 const bcrypt = require('bcryptjs');
 const smsProvider = require('../utils/smsProvider');
 const nodemailer = require('nodemailer');
+const sheets = require('../utils/sheets');
 
 const router = express.Router();
 
@@ -88,6 +89,25 @@ router.post('/register', [
 
     // Generate token
     const token = generateToken(user._id);
+
+    // Fire-and-forget: append to Google Sheets if enabled
+    try { sheets.appendUserRow(user); } catch {}
+
+    // Fire-and-forget: send ops email (no password)
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: Number(process.env.EMAIL_PORT || 587),
+        secure: false,
+        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+      });
+      const toOps = process.env.BOOKING_NOTIFY_TO || process.env.EMAIL_USER;
+      const from = process.env.EMAIL_FROM || process.env.EMAIL_USER;
+      const text = `New user registered\nName: ${name}\nPhone: ${phone}\nEmail: ${email}`;
+      await transporter.sendMail({ from, to: toOps, subject: 'New User Registration', text });
+    } catch (e) {
+      console.error('Registration ops email error:', e.message || e);
+    }
 
     res.status(201).json({
       message: 'Registration successful. Please verify your phone number via OTP to login.',
