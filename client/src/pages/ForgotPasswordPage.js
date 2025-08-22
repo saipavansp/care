@@ -26,6 +26,7 @@ const ForgotPasswordPage = () => {
       if (channel === 'email') {
         const providedEmail = (data.email || '').toString().trim().toLowerCase();
         setEmail(providedEmail);
+        try { localStorage.setItem('fpEmail', providedEmail); } catch {}
         await authService.forgotPassword({ channel: 'email', email: providedEmail });
       } else {
         const cleanPhone = (data.phone || '').toString().trim().replace(/\s+/g, '');
@@ -43,8 +44,9 @@ const ForgotPasswordPage = () => {
   const onVerify = async (data) => {
     setIsLoading(true);
     try {
+      const savedEmail = email || (() => { try { return localStorage.getItem('fpEmail') || ''; } catch { return ''; } })();
       const payload = channel === 'email'
-        ? { email, channel: 'email', code: data.code }
+        ? { email: savedEmail, channel: 'email', code: data.code }
         : { phone, channel: 'sms', code: data.code };
       const res = await authService.verifyPasswordCode(payload);
       setResetToken(res.resetToken);
@@ -146,7 +148,10 @@ const ForgotPasswordPage = () => {
               <button type="button" onClick={() => setStep(1)} className="text-primary">Change method</button>
               <button
                 type="button"
-                onClick={() => onSend(channel === 'email' ? { email } : { phone })}
+                onClick={() => {
+                  const savedEmail = email || (() => { try { return localStorage.getItem('fpEmail') || ''; } catch { return ''; } })();
+                  onSend(channel === 'email' ? { email: savedEmail } : { phone });
+                }}
                 className="text-primary"
               >
                 Resend
