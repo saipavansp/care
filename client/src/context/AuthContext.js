@@ -25,13 +25,21 @@ export const AuthProvider = ({ children }) => {
       
       if (token && savedUser) {
         // Verify token is still valid
-        const { valid } = await authService.verifyToken();
-        if (valid) {
+        try {
+          const { valid } = await authService.verifyToken();
+          if (valid) {
+            setUser(savedUser);
+            setIsAuthenticated(true);
+          } else {
+            // Token invalid: clear only token but keep user for soft fallback
+            localStorage.removeItem('token');
+            setUser(null);
+            setIsAuthenticated(false);
+          }
+        } catch {
+          // Network issue: keep session based on local storage to prevent logout on refresh
           setUser(savedUser);
           setIsAuthenticated(true);
-        } else {
-          // Token is invalid, clear storage
-          authService.logout();
         }
       }
       setLoading(false);

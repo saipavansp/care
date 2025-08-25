@@ -101,33 +101,19 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
               </div>
             )}
             
-            {/* Calculate GST (18%) */}
-            {(() => {
-              const gstAmount = Math.round(data.totalAmount * 0.18);
-              const finalTotal = data.totalAmount + gstAmount;
-              return (
-                <>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-700">GST (18%)</span>
-                    <span className="font-medium">{formatCurrency(gstAmount)}</span>
-                  </div>
-                  
-                  <div className="border-t pt-3">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-gray-900">Total Amount (incl. GST)</span>
-                      <div className="text-right">
-                        {data.originalPrice && data.originalPrice > data.totalAmount && (
-                          <div className="text-sm text-gray-500 line-through">
-                            {formatCurrency(data.originalPrice + Math.round(data.originalPrice * 0.18))}
-                          </div>
-                        )}
-                        <span className="text-xl font-bold text-primary">{formatCurrency(finalTotal)}</span>
-                      </div>
+            <div className="border-t pt-3">
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-900">Total Amount</span>
+                <div className="text-right">
+                  {data.originalPrice && data.originalPrice > data.totalAmount && (
+                    <div className="text-sm text-gray-500 line-through">
+                      {formatCurrency(data.originalPrice)}
                     </div>
-                  </div>
-                </>
-              );
-            })()}
+                  )}
+                  <span className="text-xl font-bold text-primary">{formatCurrency(data.totalAmount)}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
