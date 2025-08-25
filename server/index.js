@@ -20,23 +20,10 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 app.use(cors({
-  origin: function(origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://carecap.vercel.app',
-      'https://www.kinpin.in',
-      'https://kinpin.in',
-      process.env.CLIENT_URL
-    ];
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  // Reflect the request Origin header. This effectively allows any origin.
+  origin: true,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
   exposedHeaders: ['Content-Length', 'X-Content-Type-Options']
 }));
@@ -47,20 +34,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Global lightweight OPTIONS handler to guarantee CORS preflight success
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'https://carecap.vercel.app',
-  'https://www.kinpin.in',
-  'https://kinpin.in',
-  process.env.CLIENT_URL
-].filter(Boolean);
+// Allow any origin for preflight reflection as well
+const allowedOrigins = null;
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
+  if (origin) res.header('Access-Control-Allow-Origin', origin);
   res.header('Vary', 'Origin');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,PATCH');
