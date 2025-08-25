@@ -46,6 +46,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+// Global lightweight OPTIONS handler to guarantee CORS preflight success
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://carecap.vercel.app',
+  'https://www.kinpin.in',
+  'https://kinpin.in',
+  process.env.CLIENT_URL
+].filter(Boolean);
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Vary', 'Origin');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 // Safe rate limiting: skip OPTIONS to not interfere with CORS preflight
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
