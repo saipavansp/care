@@ -8,6 +8,7 @@ import hospitalService from '../../services/hospital';
 
 const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
   const [hospitals, setHospitals] = useState([]);
+  const [allHospitals, setAllHospitals] = useState([]);
   const [showHospitalSearch, setShowHospitalSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState(
@@ -50,33 +51,52 @@ const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
     'Other'
   ];
 
-  // Popular hospitals in major Indian cities
-  const popularHospitals = [
-    { name: 'AIIMS', address: 'Ansari Nagar, New Delhi - 110029', city: 'Delhi' },
-    { name: 'Apollo Hospital', address: 'Sarita Vihar, Delhi - 110076', city: 'Delhi' },
-    { name: 'Fortis Hospital', address: 'Sector 62, Noida - 201301', city: 'Noida' },
-    { name: 'Max Super Speciality Hospital', address: 'Press Enclave Road, Saket, Delhi - 110017', city: 'Delhi' },
-    { name: 'Medanta - The Medicity', address: 'Sector 38, Gurugram - 122001', city: 'Gurugram' },
-    { name: 'Kokilaben Dhirubhai Ambani Hospital', address: 'Rao Saheb, Achutrao Patwardhan Marg, Mumbai - 400053', city: 'Mumbai' },
-    { name: 'Nanavati Super Speciality Hospital', address: 'SV Road, Vile Parle West, Mumbai - 400056', city: 'Mumbai' },
-    { name: 'Apollo Hospitals', address: '21, Greams Lane, Chennai - 600006', city: 'Chennai' },
-    { name: 'Manipal Hospital', address: '98, HAL Old Airport Road, Bangalore - 560017', city: 'Bangalore' },
-    { name: 'Narayana Health', address: '258/A, Bommasandra, Bangalore - 560099', city: 'Bangalore' }
+  // Fallback list (Hyderabad-focused) used if API call fails
+  const fallbackHospitals = [
+    { name: 'Apollo Hospitals Jubilee Hills', address: 'Rd No 72, Jubilee Hills', city: 'Hyderabad' },
+    { name: 'Continental Hospitals', address: 'Financial District, Gachibowli', city: 'Hyderabad' },
+    { name: 'KIMS Hospitals, Kondapur', address: 'Kondapur', city: 'Hyderabad' },
+    { name: 'CARE Hospitals, Banjara Hills', address: 'Rd No 1, Banjara Hills', city: 'Hyderabad' },
+    { name: 'Gleneagles Hospital, Lakdi‑ka‑Pul', address: 'Lakdi‑ka‑Pul', city: 'Hyderabad' },
+    { name: 'Omega Hospitals, Gachibowli', address: 'Gachibowli', city: 'Hyderabad' },
+    { name: 'Motherhood Hospitals', address: 'Moula Ali Rd, MIGH Colony', city: 'Hyderabad' }
   ];
+
+  // Load hospitals from API
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await hospitalService.getAllHospitals();
+        const list = (res?.hospitals || []).map(h => ({ name: h.name, address: h.address, city: h.city }));
+        if (!mounted) return;
+        setAllHospitals(list);
+        setHospitals(list);
+      } catch (e) {
+        // Fallback to local list
+        if (!mounted) return;
+        setAllHospitals(fallbackHospitals);
+        setHospitals(fallbackHospitals);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   useEffect(() => {
     // Filter hospitals based on search query
+    const source = allHospitals.length ? allHospitals : fallbackHospitals;
     if (searchQuery.trim()) {
-      const filtered = popularHospitals.filter(
-        hospital => 
-          hospital.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          hospital.city.toLowerCase().includes(searchQuery.toLowerCase())
+      const q = searchQuery.toLowerCase();
+      const filtered = source.filter(hospital =>
+        hospital.name.toLowerCase().includes(q) ||
+        hospital.city.toLowerCase().includes(q) ||
+        (hospital.address || '').toLowerCase().includes(q)
       );
       setHospitals(filtered);
     } else {
-      setHospitals(popularHospitals);
+      setHospitals(source);
     }
-  }, [searchQuery]);
+  }, [searchQuery, allHospitals]);
 
   const selectHospital = (hospital) => {
     setValue('hospital', hospital.name);
