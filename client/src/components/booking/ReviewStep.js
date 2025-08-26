@@ -132,6 +132,7 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
             <p>• Doctor Interaction Preference – Escorts will only interact with doctors if you (or the patient) permit them; otherwise they will remain outside the consultation room.</p>
             <p>• Non‑Medical Support – Escorts are not doctors/nurses and do not provide medical advice, diagnosis, or treatment.</p>
             <p>• Patient Responsibility – You confirm the patient is medically stable and fit for non‑emergency escort assistance.</p>
+            <p>• Travel Charges Excluded – Package price does not include travel/transport costs (cab/auto, tolls, parking). These are extra and borne by the customer.</p>
             <p>• Liability Limitation – KinPin is not responsible for medical outcomes, delays, or hospital/doctor actions.</p>
             <p>• Respectful Conduct – You agree to maintain respectful behavior towards the escort. Any harassment, abuse, or unsafe conduct may result in immediate cancellation without refund.</p>
           </div>
