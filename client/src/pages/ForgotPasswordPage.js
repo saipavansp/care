@@ -93,7 +93,7 @@ const ForgotPasswordPage = () => {
                     type="tel"
                     {...register('phone', { required: 'Phone number is required', pattern: { value: PHONE_REGEX, message: 'Enter a valid 10-digit number' } })}
                     className="input-field pl-10"
-                    placeholder="9876543210"
+                    placeholder="9966255644"
                   />
                 </div>
                 {errors.phone && <p className="error-text">{errors.phone.message}</p>}

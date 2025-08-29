@@ -146,14 +146,14 @@ const authService = {
         clearTimeout(timeoutId);
         
         // Special handling for demo account
-        if (phone === '9876543210' && loginData.password === 'demo123') {
+        if (phone === '9966255644' && loginData.password === 'demo123') {
           console.log('Demo account detected, trying hardcoded fallback');
           
           // Create a mock successful response for demo account
           const mockUser = {
             _id: 'demo123456',
             name: 'Demo User',
-            phone: '9876543210',
+            phone: '9966255644',
             email: 'demo@example.com',
             role: 'user'
           };

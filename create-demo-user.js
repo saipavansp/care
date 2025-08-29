@@ -6,7 +6,7 @@ async function createDemoUser() {
     // You'll need an admin token or a special endpoint for this
     // This is just an example - you'll need to adapt it to your API
     const response = await axios.post('https://care-a6rj.onrender.com/api/auth/admin/create-user', {
-      phone: '9876543210',
+      phone: '9966255644',
       password: 'demo123',
       name: 'Demo User',
       email: 'demo@example.com',

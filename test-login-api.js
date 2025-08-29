@@ -13,7 +13,7 @@ async function testLoginAPI() {
     // Now test login
     console.log('\nTesting login endpoint...');
     const loginResponse = await axios.post('https://care-a6rj.onrender.com/api/auth/login', {
-      phone: '9876543210',
+      phone: '9966255644',
       password: 'demo123'
     }, {
       headers: {

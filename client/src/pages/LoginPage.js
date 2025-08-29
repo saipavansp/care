@@ -117,7 +117,7 @@ const LoginPage = () => {
                     }
                   })}
                   className="input-field pl-10"
-                  placeholder="9876543210"
+                  placeholder="9966255644"
                 />
               </div>
               {errors.phone && (
@@ -210,7 +210,7 @@ const LoginPage = () => {
               User Demo:
             </p>
             <p className="text-sm font-mono">
-              Phone: 9876543210
+              Phone: 9966255644
             </p>
             <p className="text-sm font-mono">Password: demo123</p>
           </div> */}

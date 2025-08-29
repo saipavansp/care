@@ -150,7 +150,7 @@ const RegisterPage = () => {
                     }
                   })}
                   className="input-field pl-10"
-                  placeholder="9876543210"
+                  placeholder="9966255644"
                 />
               </div>
               {errors.phone && (

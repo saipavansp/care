@@ -22,10 +22,10 @@ const seedData = async () => {
     // Demo User
     const demoUser = await User.create({
       name: 'Demo User',
-      phone: '9876543210',
+      phone: '9966255644',
       email: 'demo@carecompanion.in',
       password: hashedPassword,
-      whatsapp: '9876543210',
+      whatsapp: '9966255644',
       role: 'user',
       familyMembers: [
         {
@@ -126,7 +126,7 @@ const seedData = async () => {
 
     console.log('\n=== Demo Credentials ===');
     console.log('User Login:');
-    console.log('Phone: 9876543210');
+    console.log('Phone: 9966255644');
     console.log('Password: demo123');
     console.log('\nCompanion Login:');
     console.log('Phone: 9876543211');
