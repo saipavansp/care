@@ -11,6 +11,7 @@ const SHEETS_ENABLED = getEnvBoolean('GOOGLE_SHEETS_ENABLED', false);
 const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID || '';
 const USERS_SHEET_NAME = process.env.GOOGLE_SHEETS_USERS_SHEET || 'Users';
 const BOOKINGS_SHEET_NAME = process.env.GOOGLE_SHEETS_BOOKINGS_SHEET || 'Bookings';
+const ANALYTICS_SHEET_NAME = process.env.GOOGLE_SHEETS_ANALYTICS_SHEET || 'Analytics';
 
 async function getSheetsClient() {
   if (!SHEETS_ENABLED || !SPREADSHEET_ID) return null;
@@ -112,7 +113,23 @@ async function appendBookingRow(booking, user, body = {}) {
 module.exports = {
   isEnabled: SHEETS_ENABLED && !!SPREADSHEET_ID,
   appendUserRow,
-  appendBookingRow
+  appendBookingRow,
+  async appendVisitRow(visit = {}) {
+    const ts = new Date().toISOString();
+    const values = [
+      ts,
+      visit.sessionId || '',
+      visit.source || '',
+      visit.utm_source || '',
+      visit.utm_medium || '',
+      visit.utm_campaign || '',
+      visit.referrer || '',
+      visit.userAgent || '',
+      visit.ip || ''
+    ];
+    const range = `${ANALYTICS_SHEET_NAME}!A1`;
+    return appendRow(range, values);
+  }
 };
 
 

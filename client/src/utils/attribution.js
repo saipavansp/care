@@ -52,6 +52,28 @@ export function initAttribution() {
     if (referrer) localStorage.setItem('kp_referrer', referrer);
 
     if (source) localStorage.setItem('kp_source', source);
+
+    // Send a one-time visit event (per session)
+    const visitSentKey = 'kp_visit_sent';
+    const visitAlreadySent = sessionStorage.getItem(visitSentKey);
+    if (!visitAlreadySent) {
+      const payload = {
+        sessionId: localStorage.getItem('kp_session_id') || '',
+        source: localStorage.getItem('kp_source') || '',
+        utm_source: localStorage.getItem('kp_utm_source') || '',
+        utm_medium: localStorage.getItem('kp_utm_medium') || '',
+        utm_campaign: localStorage.getItem('kp_utm_campaign') || '',
+        referrer: localStorage.getItem('kp_referrer') || '',
+        userAgent: navigator.userAgent
+      };
+      fetch((process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api') + '/analytics/visit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {}).finally(() => {
+        sessionStorage.setItem(visitSentKey, '1');
+      });
+    }
   } catch {
     // no-op
   }

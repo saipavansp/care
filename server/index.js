@@ -10,6 +10,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const bookingRoutes = require('./routes/bookings');
 const hospitalRoutes = require('./routes/hospitals');
+const analyticsRoutes = require('./routes/analytics');
 const pricingRoutes = require('./routes/pricing');
 
 const app = express();
@@ -64,6 +65,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/hospitals', hospitalRoutes);
 app.use('/api/pricing', pricingRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
