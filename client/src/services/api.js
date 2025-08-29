@@ -1,7 +1,7 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_URL = 'https://care-a6rj.onrender.com/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api';
 
 // List of allowed frontend domains
 const ALLOWED_DOMAINS = [
@@ -16,6 +16,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 60000 // 60s to tolerate cold starts
 });
 
 // Request interceptor to add auth token
