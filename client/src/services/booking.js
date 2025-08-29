@@ -28,6 +28,24 @@ const bookingService = {
       if (parts.length) normalized.pickupAddress = parts.join(', ');
     }
 
+    // Attach attribution fields from localStorage
+    try {
+      const source = localStorage.getItem('kp_source') || '';
+      const utm_source = localStorage.getItem('kp_utm_source') || '';
+      const utm_medium = localStorage.getItem('kp_utm_medium') || '';
+      const utm_campaign = localStorage.getItem('kp_utm_campaign') || '';
+      const referrer = localStorage.getItem('kp_referrer') || '';
+      const sessionId = localStorage.getItem('kp_session_id') || '';
+      Object.assign(normalized, {
+        source,
+        utm_source,
+        utm_medium,
+        utm_campaign,
+        referrer,
+        sessionId
+      });
+    } catch {}
+
     const response = await api.post('/bookings/create', normalized);
     return response.data;
   },

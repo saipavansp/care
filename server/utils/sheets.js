@@ -96,7 +96,14 @@ async function appendBookingRow(booking, user, body = {}) {
     body.appointmentDate || '',
     body.appointmentTime || '',
     booking.status || '',
-    body.totalAmount ?? ''
+    body.totalAmount ?? '',
+    // Attribution fields
+    body.source || '',
+    body.utm_source || '',
+    body.utm_medium || '',
+    body.utm_campaign || '',
+    body.referrer || '',
+    body.sessionId || ''
   ];
   const range = `${BOOKINGS_SHEET_NAME}!A1`;
   return appendRow(range, values);

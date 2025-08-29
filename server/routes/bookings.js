@@ -77,7 +77,14 @@ router.post('/create', auth, [
         `Pickup Address: ${req.body.pickupAddress}`,
         req.body.package ? `Package: ${req.body.package}` : '',
         req.body.preferences ? `Preferences: ${JSON.stringify(req.body.preferences)}` : '',
-        `Total Amount: ${req.body.totalAmount}`
+        `Total Amount: ${req.body.totalAmount}`,
+        '',
+        `Source: ${req.body.source || ''}`,
+        `UTM Source: ${req.body.utm_source || ''}`,
+        `UTM Medium: ${req.body.utm_medium || ''}`,
+        `UTM Campaign: ${req.body.utm_campaign || ''}`,
+        `Referrer: ${req.body.referrer || ''}`,
+        `Session: ${req.body.sessionId || ''}`
       ].filter(Boolean);
 
       const html = `
@@ -101,6 +108,12 @@ router.post('/create', auth, [
         ${req.body.package ? `<p><strong>Package:</strong> ${req.body.package}</p>` : ''}
         ${req.body.preferences ? `<p><strong>Preferences:</strong> ${JSON.stringify(req.body.preferences)}</p>` : ''}
         <p><strong>Total Amount:</strong> ${req.body.totalAmount}</p>
+        <hr />
+        <p><strong>Source:</strong> ${req.body.source || ''}</p>
+        <p><strong>UTM Source:</strong> ${req.body.utm_source || ''}</p>
+        <p><strong>UTM Medium:</strong> ${req.body.utm_medium || ''}</p>
+        <p><strong>UTM Campaign:</strong> ${req.body.utm_campaign || ''}</p>
+        <p><strong>Referrer:</strong> ${req.body.referrer || ''}</p>
       `;
 
       await transporter.sendMail({
