@@ -8,6 +8,7 @@ import BenefitsSection from '../components/home/BenefitsSection';
 import TestimonialsSection from '../components/home/TestimonialsSection';
 import CTASection from '../components/home/CTASection';
 import StatsSection from '../components/home/StatsSection';
+import YouTubeVideoSection from '../components/home/YouTubeVideoSection';
 
 const HomePage = () => {
   return (
@@ -23,6 +24,9 @@ const HomePage = () => {
 
       {/* How It Works */}
       <HowItWorksSection />
+
+      {/* Video Section */}
+      <YouTubeVideoSection />
 
       {/* Benefits */}
       <BenefitsSection />
