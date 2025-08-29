@@ -66,7 +66,9 @@ export function initAttribution() {
         referrer: localStorage.getItem('kp_referrer') || '',
         userAgent: navigator.userAgent
       };
-      fetch((process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api') + '/analytics/visit', {
+      const base = (process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api');
+      const ensured = base.endsWith('/api') ? base : `${base.replace(/\/+$/, '')}/api`;
+      fetch(ensured + '/analytics/visit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

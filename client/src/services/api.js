@@ -1,7 +1,12 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api';
+const RAW_API_URL = process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api';
+// Ensure base URL ends with /api
+const API_URL = RAW_API_URL.endsWith('/api')
+  ? RAW_API_URL
+  : `${RAW_API_URL.replace(/\/+$/, '')}/api`;
+export const API_BASE_URL = API_URL;
 
 // List of allowed frontend domains
 const ALLOWED_DOMAINS = [
