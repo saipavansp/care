@@ -19,14 +19,14 @@ const HomePage = () => {
       {/* Stats Section */}
       <StatsSection />
 
+      {/* Video Section */}
+      <YouTubeVideoSection />
+
       {/* Problem Section */}
       <ProblemSection />
 
       {/* How It Works */}
       <HowItWorksSection />
-
-      {/* Video Section */}
-      <YouTubeVideoSection />
 
       {/* Benefits */}
       <BenefitsSection />
