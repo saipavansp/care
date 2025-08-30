@@ -12,7 +12,9 @@ import YouTubeVideoSection from '../components/home/YouTubeVideoSection';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" itemScope itemType="http://schema.org/Organization">
+      <meta itemProp="name" content="KinPin" />
+      <meta itemProp="url" content="https://www.kinpin.in/" />
       {/* Hero Section */}
       <HeroSection />
 
