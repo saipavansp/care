@@ -13,7 +13,8 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
     defaultValues: {
       patientName: data.patientName,
       patientAge: data.patientAge,
-      patientGender: data.patientGender
+      patientGender: data.patientGender,
+      contactEmail: data.contactEmail
     }
   });
 
@@ -118,6 +119,27 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
               <p className="error-text">{errors.patientGender.message}</p>
             )}
           </div>
+        </div>
+
+        {/* Contact Email for updates/confirmation (optional for guests) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Contact Email (for booking updates)
+          </label>
+          <input
+            type="email"
+            {...register('contactEmail', {
+              pattern: {
+                value: /^(?:[a-zA-Z0-9_'^&\/+-])+(?:\.(?:[a-zA-Z0-9_'^&\/+-])+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/,
+                message: 'Please enter a valid email'
+              }
+            })}
+            className="input-field"
+            placeholder="you@example.com"
+          />
+          {errors.contactEmail && (
+            <p className="error-text">{errors.contactEmail.message}</p>
+          )}
         </div>
 
         {/* Medical Conditions removed as requested */}

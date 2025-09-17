@@ -23,6 +23,7 @@ const BookingPage = () => {
     patientName: '',
     patientAge: '',
     patientGender: '',
+    contactEmail: '',
     medicalConditions: '',
     
     // Appointment Details

@@ -95,18 +95,9 @@ const Header = () => {
               </Link>
             )}
 
-            {!isAuthenticated ? (
-              <button 
-                onClick={() => navigate('/login', { state: { from: { pathname: '/book' }, message: 'Please login to book a companion' } })}
-                className="btn-primary"
-              >
-                Book Now
-              </button>
-            ) : (
-              <Link to="/book" className="btn-primary">
-                Book Now
-              </Link>
-            )}
+            <Link to="/book" className="btn-primary">
+              Book Now
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}

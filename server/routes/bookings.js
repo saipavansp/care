@@ -125,8 +125,9 @@ router.post('/create', [
         html
       });
 
-      // Send confirmation to user's registered email (if available)
-      if (user.email) {
+      // Send confirmation to user's registered email (if available) or guest contactEmail
+      const guestEmail = req.body.contactEmail && String(req.body.contactEmail).trim().toLowerCase();
+      if (user.email || guestEmail) {
         const userText = `Dear ${user.name || 'Customer'},\n\nThank you for booking with KinPin. Your booking has been received and confirmed.\n\nBooking ID: ${booking.bookingId}\nPatient: ${req.body.patientName}\nHospital: ${req.body.hospital}\nDoctor: ${req.body.doctor || '-'}\n\n— Team KinPin`;
         const userHtml = `
           <p>Dear ${user.name || 'Customer'},</p>
@@ -140,7 +141,7 @@ router.post('/create', [
 
         await transporter.sendMail({
           from: fromAddress,
-          to: user.email,
+          to: user.email || guestEmail,
           subject: 'Your KinPin Booking Confirmation',
           text: userText,
           html: userHtml
