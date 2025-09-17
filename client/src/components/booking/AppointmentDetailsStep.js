@@ -5,6 +5,7 @@ import { FiArrowLeft, FiArrowRight, FiCalendar, FiClock, FiMapPin, FiSearch } fr
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import hospitalService from '../../services/hospital';
+import { trackEvent } from '../../utils/attribution';
 
 const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
   const [hospitals, setHospitals] = useState([]);
@@ -148,6 +149,7 @@ const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
       ...formData,
       appointmentDate: selectedDate
     });
+    trackEvent('booking_step_continue', { step: 'appointment_details' });
     onNext();
   };
 
@@ -220,7 +222,7 @@ const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
             )}
           </div>
           {errors.hospital && (
-            <p className="error-text">{errors.hospital.message}</p>
+            <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'appointment_details', field: 'hospital' })}>{errors.hospital.message}</p>
           )}
         </div>
 
@@ -236,7 +238,7 @@ const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
             placeholder="Enter complete hospital address"
           />
           {errors.hospitalAddress && (
-            <p className="error-text">{errors.hospitalAddress.message}</p>
+            <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'appointment_details', field: 'hospitalAddress' })}>{errors.hospitalAddress.message}</p>
           )}
         </div>
 
@@ -312,7 +314,7 @@ const AppointmentDetailsStep = ({ data, updateData, onNext, onPrevious }) => {
             <FiClock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
           </div>
           {errors.appointmentTime && (
-            <p className="error-text">{errors.appointmentTime.message}</p>
+            <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'appointment_details', field: 'appointmentTime' })}>{errors.appointmentTime.message}</p>
           )}
           {selectedDate && new Date(selectedDate).toDateString() === new Date().toDateString() && (
             <p className="text-sm text-orange-600 mt-1">

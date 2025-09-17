@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { trackEvent } from '../../utils/attribution';
 
 const YouTubeVideoSection = () => {
+  useEffect(() => {
+    trackEvent('video_section_view');
+  }, []);
+
   return (
     <section className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,6 +19,7 @@ const YouTubeVideoSection = () => {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
+              onLoad={() => trackEvent('video_iframe_loaded')}
             />
           </div>
         </div>

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { FiUser, FiCalendar, FiHeart, FiArrowRight } from 'react-icons/fi';
 import { GENDERS } from '../../utils/constants';
+import { trackEvent } from '../../utils/attribution';
 
 const PatientDetailsStep = ({ data, updateData, onNext }) => {
   const {
@@ -20,6 +21,7 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
 
   const onSubmit = (formData) => {
     updateData(formData);
+    trackEvent('booking_step_continue', { step: 'patient_details' });
     onNext();
   };
 
@@ -60,7 +62,7 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
             />
           </div>
           {errors.patientName && (
-            <p className="error-text">{errors.patientName.message}</p>
+            <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'patient_details', field: 'patientName' })}>{errors.patientName.message}</p>
           )}
         </div>
 
@@ -93,7 +95,7 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
               />
             </div>
             {errors.patientAge && (
-              <p className="error-text">{errors.patientAge.message}</p>
+              <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'patient_details', field: 'patientAge' })}>{errors.patientAge.message}</p>
             )}
           </div>
 
@@ -116,7 +118,7 @@ const PatientDetailsStep = ({ data, updateData, onNext }) => {
               ))}
             </select>
             {errors.patientGender && (
-              <p className="error-text">{errors.patientGender.message}</p>
+              <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'patient_details', field: 'patientGender' })}>{errors.patientGender.message}</p>
             )}
           </div>
         </div>

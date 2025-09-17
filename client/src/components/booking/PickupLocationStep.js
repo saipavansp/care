@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { FiArrowLeft, FiArrowRight, FiMapPin, FiHome, FiMap } from 'react-icons/fi';
+import { trackEvent } from '../../utils/attribution';
 
 const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
@@ -93,6 +94,7 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
       ...formData,
       pickupAddress: completeAddress
     });
+    trackEvent('booking_step_continue', { step: 'pickup_location' });
     onNext();
   };
 
@@ -171,7 +173,7 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
             placeholder="e.g., Flat 301, Sunshine Apartments"
           />
           {errors.addressLine1 && (
-            <p className="error-text">{errors.addressLine1.message}</p>
+            <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'pickup_location', field: 'addressLine1' })}>{errors.addressLine1.message}</p>
           )}
         </div>
 
@@ -214,7 +216,7 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
               placeholder="e.g., New Delhi"
             />
             {errors.city && (
-              <p className="error-text">{errors.city.message}</p>
+              <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'pickup_location', field: 'city' })}>{errors.city.message}</p>
             )}
           </div>
 
@@ -232,7 +234,7 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
               ))}
             </select>
             {errors.state && (
-              <p className="error-text">{errors.state.message}</p>
+              <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'pickup_location', field: 'state' })}>{errors.state.message}</p>
             )}
           </div>
         </div>
@@ -256,7 +258,7 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
             maxLength="6"
           />
           {errors.pincode && (
-            <p className="error-text">{errors.pincode.message}</p>
+            <p className="error-text" onLoad={() => trackEvent('booking_validation_error', { step: 'pickup_location', field: 'pincode' })}>{errors.pincode.message}</p>
           )}
         </div>
 
