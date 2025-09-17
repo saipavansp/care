@@ -39,7 +39,7 @@ const HeroSection = () => {
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-900 mb-6 leading-tight">
               Your Trusted
-              <span className="text-gradient block">Medical escort</span>
+              <span className="text-gradient block">Medical attender</span>
             </h1>
 
             <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-lg mx-auto lg:mx-0">

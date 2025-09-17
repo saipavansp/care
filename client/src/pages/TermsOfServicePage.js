@@ -12,8 +12,8 @@ const TermsOfServicePage = () => {
           <div className="space-y-6 text-gray-800">
             <section>
               <h2 className="text-xl font-semibold mb-2">1. Nature of Services</h2>
-              <p>1.1 KinPin provides medical escort and assistance services for outpatients and individuals who require support in visiting hospitals, clinics, or healthcare facilities.</p>
-              <p>1.2 Our escorts are not doctors, nurses, or licensed healthcare providers. They cannot provide medical advice, diagnosis, or treatment.</p>
+              <p>1.1 KinPin provides medical attender and assistance services for outpatients and individuals who require support in visiting hospitals, clinics, or healthcare facilities.</p>
+              <p>1.2 Our attenders are not doctors, nurses, or licensed healthcare providers. They cannot provide medical advice, diagnosis, or treatment.</p>
               <p>1.3 The services are limited to accompaniment, assistance in communication with medical staff, logistical support, and basic non-medical guidance.</p>
             </section>
 
@@ -43,29 +43,29 @@ const TermsOfServicePage = () => {
             <section>
               <h2 className="text-xl font-semibold mb-2">5. User Responsibilities</h2>
               <p>5.1 The User must provide accurate, complete, and truthful details at the time of booking.</p>
-              <p>5.2 Users must ensure that patients are medically stable for escort services.</p>
-              <p>5.3 Users are responsible for informing KinPin and the escort about any special needs, health conditions, or mobility concerns in advance.</p>
-              <p>5.4 The User must treat escorts with dignity, respect, and safety.</p>
+              <p>5.2 Users must ensure that patients are medically stable for attender services.</p>
+              <p>5.3 Users are responsible for informing KinPin and the attender about any special needs, health conditions, or mobility concerns in advance.</p>
+              <p>5.4 The User must treat attenders with dignity, respect, and safety.</p>
             </section>
 
             <section>
               <h2 className="text-xl font-semibold mb-2">6. Company Responsibilities and Limitations</h2>
-              <p>6.1 The Company will make reasonable efforts to assign qualified escorts for bookings.</p>
+              <p>6.1 The Company will make reasonable efforts to assign qualified attenders for bookings.</p>
               <p>6.2 The Company is not responsible for: Medical negligence or outcomes of treatment by hospitals/doctors. Any loss, injury, accident, or delay outside its control (including traffic, hospital wait times, third-party actions).</p>
-              <p>6.3 Escorts are not permitted to administer medication, perform medical procedures, or take independent medical decisions.</p>
+              <p>6.3 Attenders are not permitted to administer medication, perform medical procedures, or take independent medical decisions.</p>
             </section>
 
             <section>
               <h2 className="text-xl font-semibold mb-2">7. Safety and Conduct</h2>
-              <p>7.1 KinPin follows safety protocols to verify escorts’ identity and background.</p>
-              <p>7.2 Escorts and Users must comply with applicable laws during service.</p>
+              <p>7.1 KinPin follows safety protocols to verify attenders’ identity and background.</p>
+              <p>7.2 Attenders and Users must comply with applicable laws during service.</p>
               <p>7.3 Any abusive, unlawful, or inappropriate conduct will result in immediate termination of service without refund.</p>
             </section>
 
             <section>
               <h2 className="text-xl font-semibold mb-2">8. Liability Disclaimer</h2>
-              <p>8.1 The Company acts solely as a service provider of non-medical escort assistance.</p>
-              <p>8.2 The Company shall not be held liable for: Death, injury, medical complications, or adverse outcomes. Errors or miscommunication between User, escort, and healthcare providers. Delays, cancellations, or unavailability of escorts.</p>
+              <p>8.1 The Company acts solely as a service provider of non-medical attender assistance.</p>
+              <p>8.2 The Company shall not be held liable for: Death, injury, medical complications, or adverse outcomes. Errors or miscommunication between User, attender, and healthcare providers. Delays, cancellations, or unavailability of attenders.</p>
               <p>8.3 The User agrees to indemnify and hold harmless KinPin, its employees, agents, and affiliates from any claims, damages, or liabilities arising out of service usage.</p>
             </section>
 

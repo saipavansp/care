@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated }) => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
-  const [scrolledToEnd, setScrolledToEnd] = useState(false);
+  const [scrolledToEnd, setScrolledToEnd] = useState(true);
   const termsRef = useRef(null);
   
   const handleSubmit = () => {
@@ -117,31 +117,21 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
           </div>
         </div>
 
-        {/* Booking Terms - must scroll to end to enable acceptance */}
+        {/* Booking Terms */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <h4 className="font-medium text-yellow-900 mb-2">Please read and confirm these booking terms</h4>
           <div
             ref={termsRef}
-            onScroll={(e) => {
-              const el = e.currentTarget;
-              if (el.scrollTop + el.clientHeight >= el.scrollHeight - 4) setScrolledToEnd(true);
-            }}
             className="max-h-48 overflow-y-auto pr-2 text-sm text-yellow-800 space-y-2"
           >
             <p>• No Emergency Cases – KinPin is not an emergency service. For urgent/critical care, call 108 or visit the nearest emergency.</p>
-            <p>• Doctor Interaction Preference – Escorts will only interact with doctors if you (or the patient) permit them; otherwise they will remain outside the consultation room.</p>
-            <p>• Non‑Medical Support – Escorts are not doctors/nurses and do not provide medical advice, diagnosis, or treatment.</p>
-            <p>• Patient Responsibility – You confirm the patient is medically stable and fit for non‑emergency escort assistance.</p>
+            <p>• Doctor Interaction Preference – Attenders will only interact with doctors if you (or the patient) permit them; otherwise they will remain outside the consultation room.</p>
+            <p>• Non‑Medical Support – Attenders are not doctors/nurses and do not provide medical advice, diagnosis, or treatment.</p>
+            <p>• Patient Responsibility – You confirm the patient is medically stable and fit for non‑emergency attendant assistance.</p>
             <p>• Travel Charges Excluded – Package price does not include travel/transport costs (cab/auto, tolls, parking). These are extra and borne by the customer.</p>
             <p>• Liability Limitation – KinPin is not responsible for medical outcomes, delays, or hospital/doctor actions.</p>
-            <p>• Respectful Conduct – You agree to maintain respectful behavior towards the escort. Any harassment, abuse, or unsafe conduct may result in immediate cancellation without refund.</p>
+            <p>• Respectful Conduct – You agree to maintain respectful behavior towards the attender. Any harassment, abuse, or unsafe conduct may result in immediate cancellation without refund.</p>
           </div>
-          {!scrolledToEnd && (
-            <div className="mt-2 text-xs text-red-600 flex items-center" aria-live="polite">
-              <FiAlertCircle className="mr-1" />
-              <span>Scroll to the bottom to enable the confirmation checkbox.</span>
-            </div>
-          )}
         </div>
 
         {/* Login/Payment Section */}
@@ -191,18 +181,12 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
                 className={`mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded ${
                   showTermsError ? 'border-red-500 ring-1 ring-red-500' : ''
                 }`}
-                disabled={!scrolledToEnd}
+                disabled={false}
               />
               <label htmlFor="terms" className="text-sm text-gray-700">
                 I have read and agree to the booking terms and conditions above, and I confirm all information provided is accurate.
               </label>
             </div>
-            {!scrolledToEnd && (
-              <div className="text-xs text-red-600 mt-2 flex items-center" aria-live="polite">
-                <FiAlertCircle className="mr-1" />
-                <span>Action required: scroll the terms above to enable the checkbox.</span>
-              </div>
-            )}
             
             {showTermsError && (
               <div className="flex items-center text-red-500 text-sm">

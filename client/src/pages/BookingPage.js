@@ -85,22 +85,6 @@ const BookingPage = () => {
   };
 
   const handleSubmit = async () => {
-    // Check if user is logged in when trying to submit payment
-    if (!isAuthenticated) {
-      // Store booking data in localStorage to retrieve after login
-      localStorage.setItem('pendingBooking', JSON.stringify(bookingData));
-      localStorage.setItem('bookingReturnUrl', '/book?step=5');
-      
-      toast.error('Please login to complete your booking');
-      navigate('/login', { 
-        state: { 
-          from: { pathname: '/book' },
-          message: 'Please login to complete your booking and payment'
-        } 
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const response = await bookingService.createBooking(bookingData);
@@ -117,17 +101,8 @@ const BookingPage = () => {
     }
   };
 
-  // Check authentication and redirect if not logged in
-  React.useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login', { 
-        state: { 
-          from: { pathname: '/book' },
-          message: 'Please login to book a companion'
-        } 
-      });
-    }
-  }, [isAuthenticated, navigate]);
+  // Guest booking allowed: no redirect on not authenticated
+  React.useEffect(() => {}, []);
 
   const renderStep = () => {
     switch (currentStep) {
@@ -197,11 +172,9 @@ const BookingPage = () => {
             <p className="text-lg text-gray-600">
               Complete the form below to schedule your companion visit
             </p>
-            {!isAuthenticated && currentStep < 5 && (
-              <p className="text-sm text-orange-600 mt-2">
-                No login required until payment - fill your details freely!
-              </p>
-            )}
+            <p className="text-sm text-orange-600 mt-2">
+              No login required — you can book without creating an account.
+            </p>
           </div>
 
           {/* Progress Bar */}

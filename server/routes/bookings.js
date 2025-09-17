@@ -7,8 +7,8 @@ const sheets = require('../utils/sheets');
 
 const router = express.Router();
 
-// Create new booking
-router.post('/create', auth, [
+// Create new booking (guest booking allowed)
+router.post('/create', [
   body('patientName').trim().notEmpty().withMessage('Patient name is required'),
   body('patientAge').isInt({ min: 1, max: 120 }).withMessage('Please enter a valid age'),
   body('patientGender').isIn(['male', 'female', 'other']).withMessage('Please select a valid gender'),
@@ -21,7 +21,8 @@ router.post('/create', auth, [
 ], validate, async (req, res) => {
   try {
     const bookingData = {
-      userId: req.userId,
+      // userId is optional for guest bookings
+      ...(req.userId ? { userId: req.userId } : {}),
       ...req.body
     };
     // Confirm booking immediately (no online payments for now)
