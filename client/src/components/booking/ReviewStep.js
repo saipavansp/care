@@ -1,9 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { FiArrowLeft, FiCheck, FiEdit2, FiUser, FiAlertCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiCheck, FiEdit2, FiAlertCircle } from 'react-icons/fi';
 import { formatDate, formatCurrency } from '../../utils/helpers';
 import LoadingSpinner from '../common/LoadingSpinner';
-import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated }) => {
@@ -134,68 +133,34 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
           </div>
         </div>
 
-        {/* Login/Payment Section */}
-        {!isAuthenticated ? (
-          <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-6 text-center">
-            <FiUser className="w-12 h-12 text-orange-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Login Required for Payment
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Please login or create an account to complete your booking and proceed to payment
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                to="/login"
-                state={{ 
-                  from: { pathname: '/book' },
-                  message: 'Please login to complete your booking'
-                }}
-                className="btn-primary inline-flex items-center justify-center"
-              >
-                Login to Continue
-              </Link>
-              <Link
-                to="/register"
-                state={{ 
-                  from: { pathname: '/book' },
-                  message: 'Create an account to complete your booking'
-                }}
-                className="btn-secondary inline-flex items-center justify-center"
-              >
-                Create Account
-              </Link>
-            </div>
+        {/* Acceptance Section (shown for both guests and logged-in users) */}
+        <div className="space-y-3">
+          <div className="flex items-start space-x-3">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={termsAccepted}
+              onChange={(e) => {
+                setTermsAccepted(e.target.checked);
+                if (e.target.checked) setShowTermsError(false);
+              }}
+              className={`mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded ${
+                showTermsError ? 'border-red-500 ring-1 ring-red-500' : ''
+              }`}
+              disabled={false}
+            />
+            <label htmlFor="terms" className="text-sm text-gray-700">
+              I have read and agree to the booking terms and conditions above, and I confirm all information provided is accurate.
+            </label>
           </div>
-        ) : (
-          <div className="space-y-3">
-            <div className="flex items-start space-x-3">
-              <input
-                type="checkbox"
-                id="terms"
-                checked={termsAccepted}
-                onChange={(e) => {
-                  setTermsAccepted(e.target.checked);
-                  if (e.target.checked) setShowTermsError(false);
-                }}
-                className={`mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded ${
-                  showTermsError ? 'border-red-500 ring-1 ring-red-500' : ''
-                }`}
-                disabled={false}
-              />
-              <label htmlFor="terms" className="text-sm text-gray-700">
-                I have read and agree to the booking terms and conditions above, and I confirm all information provided is accurate.
-              </label>
+
+          {showTermsError && (
+            <div className="flex items-center text-red-500 text-sm">
+              <FiAlertCircle className="mr-1" />
+              <span>You must accept the terms and conditions to proceed</span>
             </div>
-            
-            {showTermsError && (
-              <div className="flex items-center text-red-500 text-sm">
-                <FiAlertCircle className="mr-1" />
-                <span>You must accept the terms and conditions to proceed</span>
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Navigation */}
@@ -210,22 +175,20 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
           Previous
         </button>
         
-        {isAuthenticated && (
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-            className="btn-primary inline-flex items-center min-w-[150px] justify-center"
-          >
-            {isSubmitting ? (
-              <LoadingSpinner size="small" color="white" />
-            ) : (
-              <>
-                <FiCheck className="mr-2" />
-                Confirm Booking
-              </>
-            )}
-          </button>
-        )}
+        <button
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="btn-primary inline-flex items-center min-w-[150px] justify-center"
+        >
+          {isSubmitting ? (
+            <LoadingSpinner size="small" color="white" />
+          ) : (
+            <>
+              <FiCheck className="mr-2" />
+              Confirm Booking
+            </>
+          )}
+        </button>
       </div>
 
       {/* Edit Options */}
