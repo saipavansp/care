@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiPhone, FiMail, FiMapPin, FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from 'react-icons/fi';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaWhatsapp, FaYoutube } from 'react-icons/fa';
 import LinkedInStyleLogo from '../common/LinkedInStyleLogo';
 
 const Footer = () => {
@@ -29,9 +29,10 @@ const Footer = () => {
   };
 
   const socialLinks = [
+    { icon: FiInstagram, url: 'https://www.instagram.com/kinpin.health/', label: 'Instagram' },
+    { icon: FaYoutube, url: 'https://www.youtube.com/@kinpin.health', label: 'YouTube' },
     { icon: FiFacebook, url: 'https://facebook.com', label: 'Facebook' },
     { icon: FiTwitter, url: 'https://twitter.com', label: 'Twitter' },
-    { icon: FiInstagram, url: 'https://instagram.com', label: 'Instagram' },
     { icon: FiLinkedin, url: 'https://linkedin.com', label: 'LinkedIn' }
   ];
 
@@ -147,7 +148,7 @@ const Footer = () => {
         <div className="max-width-container section-padding">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
-              © {currentYear} Kinpin. All rights reserved.
+              © {currentYear} Kinpin. All rights reserved. <span className="hidden md:inline">•</span> Made with <span role="img" aria-label="love">❤️</span> in Hyderabad
             </p>
             <div className="flex items-center space-x-4">
               {socialLinks.map((social) => (
