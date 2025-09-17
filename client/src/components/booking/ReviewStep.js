@@ -4,6 +4,7 @@ import { FiArrowLeft, FiCheck, FiEdit2, FiAlertCircle } from 'react-icons/fi';
 import { formatDate, formatCurrency } from '../../utils/helpers';
 import LoadingSpinner from '../common/LoadingSpinner';
 import toast from 'react-hot-toast';
+import { trackEvent } from '../../utils/attribution';
 
 const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated }) => {
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -17,6 +18,7 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
       toast.error('Please accept the terms and conditions');
       return;
     }
+    trackEvent('booking_submit_click', { totalAmount: data.totalAmount });
     onSubmit();
   };
   const sections = [

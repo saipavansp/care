@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FiArrowRight, FiCheckCircle } from 'react-icons/fi';
 import { FaUserMd, FaHospital, FaHeartbeat } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
+import { trackEvent } from '../../utils/attribution';
 
 const HeroSection = () => {
   const { isAuthenticated } = useAuth();
@@ -47,7 +48,7 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
-              <Link to="/book" className="btn-primary inline-flex items-center justify-center group">
+              <Link to="/book" onClick={() => trackEvent('book_now_click', { source: 'hero' })} className="btn-primary inline-flex items-center justify-center group">
                 Book Your Companion
                 <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>

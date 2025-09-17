@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiArrowLeft, FiArrowRight, FiCheck, FiStar } from 'react-icons/fi';
 import pricingService from '../../services/pricing';
+import { trackEvent } from '../../utils/attribution';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { formatCurrency } from '../../utils/helpers';
 
@@ -85,6 +86,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
   };
 
   const handleSelectPlan = (plan) => {
+    trackEvent('pricing_plan_select', { planId: plan.id, price: plan.price });
     setSelectedPlanId(plan.id);
     updateData({
       packageId: plan.id,
@@ -99,6 +101,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
   };
 
   const handleContinue = () => {
+    trackEvent('booking_step_continue', { step: 'package_selection', selectedPlanId });
     onNext();
   };
 

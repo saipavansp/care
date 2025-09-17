@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowRight, FiPhone } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
+import { trackEvent } from '../../utils/attribution';
 
 const CTASection = () => {
   const { isAuthenticated } = useAuth();
@@ -34,6 +35,7 @@ const CTASection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               to="/book" 
+              onClick={() => trackEvent('book_now_click', { source: 'cta_section' })}
               className="bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center justify-center group"
             >
               Book Your Companion Now

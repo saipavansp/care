@@ -12,6 +12,9 @@ const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID || '';
 const USERS_SHEET_NAME = process.env.GOOGLE_SHEETS_USERS_SHEET || 'Users';
 const BOOKINGS_SHEET_NAME = process.env.GOOGLE_SHEETS_BOOKINGS_SHEET || 'Bookings';
 const ANALYTICS_SHEET_NAME = process.env.GOOGLE_SHEETS_ANALYTICS_SHEET || 'Analytics';
+const SESSIONS_SHEET_NAME = process.env.GOOGLE_SHEETS_SESSIONS_SHEET || 'Sessions';
+const PAGEVIEWS_SHEET_NAME = process.env.GOOGLE_SHEETS_PAGEVIEWS_SHEET || 'Pageviews';
+const EVENTS_SHEET_NAME = process.env.GOOGLE_SHEETS_EVENTS_SHEET || 'Events';
 
 async function getSheetsClient() {
   if (!SHEETS_ENABLED || !SPREADSHEET_ID) return null;
@@ -128,6 +131,60 @@ module.exports = {
       visit.ip || ''
     ];
     const range = `${ANALYTICS_SHEET_NAME}!A1`;
+    return appendRow(range, values);
+  }
+  , async appendSessionRow(session = {}) {
+    const values = [
+      new Date().toISOString(),
+      session.sessionId || '',
+      session.source || '',
+      session.utm_source || '',
+      session.utm_medium || '',
+      session.utm_campaign || '',
+      session.referrer || '',
+      session.startedAt || '',
+      session.endedAt || '',
+      Array.isArray(session.pageviews) ? session.pageviews.length : 0
+    ];
+    const range = `${SESSIONS_SHEET_NAME}!A1`;
+    return appendRow(range, values);
+  }
+  , async appendPageviewRows(session = {}) {
+    if (!Array.isArray(session.pageviews) || session.pageviews.length === 0) return true;
+    const rows = session.pageviews.map(pv => [
+      session.sessionId || '',
+      pv.path || '',
+      Math.round((pv.durationMs || 0) / 1000),
+      pv.maxScrollPercent || 0
+    ]);
+    try {
+      const sheetsClient = await getSheetsClient();
+      if (!sheetsClient) return false;
+      await sheetsClient.spreadsheets.values.append({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `${PAGEVIEWS_SHEET_NAME}!A1`,
+        valueInputOption: 'USER_ENTERED',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: rows }
+      });
+      return true;
+    } catch (e) {
+      console.error('Sheets append (pageviews) error:', e?.response?.data || e.message || e);
+      return false;
+    }
+  }
+  , async appendEventRow(ev = {}) {
+    const values = [
+      new Date().toISOString(),
+      ev.sessionId || '',
+      ev.eventName || '',
+      ev.path || '',
+      ev.timestamp || '',
+      JSON.stringify(ev.metadata || {}),
+      ev.scrollPercent || 0,
+      ev.timeSincePageLoadMs || 0
+    ];
+    const range = `${EVENTS_SHEET_NAME}!A1`;
     return appendRow(range, values);
   }
 };

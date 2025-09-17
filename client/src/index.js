@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { initAttribution } from './utils/attribution';
+import { initAttribution, initSessionTracking } from './utils/attribution';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // Initialize attribution capture on app boot
 initAttribution();
+initSessionTracking();
 root.render(
   <React.StrictMode>
     <App />

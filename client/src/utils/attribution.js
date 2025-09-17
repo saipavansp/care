@@ -81,4 +81,110 @@ export function initAttribution() {
   }
 }
 
+// Session analytics: track pageviews, time, and scroll depth
+let kp_session_start = Date.now();
+let kp_page_start = Date.now();
+let kp_max_scroll = 0;
+let kp_pageviews = [];
 
+function kp_path() {
+  try { return window.location.pathname + window.location.search + window.location.hash; } catch { return '/'; }
+}
+
+function kp_scroll_pct() {
+  try {
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    if (h <= vh) return 100;
+    return Math.min(100, Math.round(((y + vh) / h) * 100));
+  } catch { return 0; }
+}
+
+function kp_record_pageview() {
+  const now = Date.now();
+  const durationMs = now - kp_page_start;
+  kp_pageviews.push({ path: kp_path(), durationMs, maxScrollPercent: kp_max_scroll });
+  kp_page_start = now;
+  kp_max_scroll = 0;
+}
+
+export function initSessionTracking() {
+  try {
+    kp_session_start = Date.now();
+    kp_page_start = Date.now();
+    kp_max_scroll = 0;
+    kp_pageviews = [];
+
+    window.addEventListener('scroll', () => {
+      const p = kp_scroll_pct();
+      if (p > kp_max_scroll) kp_max_scroll = p;
+    }, { passive: true });
+
+    const _push = history.pushState;
+    history.pushState = function() {
+      // @ts-ignore
+      _push.apply(this, arguments);
+      kp_record_pageview();
+    };
+    const _replace = history.replaceState;
+    history.replaceState = function() {
+      // @ts-ignore
+      _replace.apply(this, arguments);
+      kp_record_pageview();
+    };
+    window.addEventListener('popstate', kp_record_pageview);
+
+    window.addEventListener('beforeunload', sendSessionSummary, { capture: true });
+  } catch {}
+}
+
+export function sendSessionSummary() {
+  try { kp_record_pageview(); } catch {}
+  try {
+    const payload = {
+      sessionId: localStorage.getItem('kp_session_id') || '',
+      source: localStorage.getItem('kp_source') || '',
+      utm_source: localStorage.getItem('kp_utm_source') || '',
+      utm_medium: localStorage.getItem('kp_utm_medium') || '',
+      utm_campaign: localStorage.getItem('kp_utm_campaign') || '',
+      referrer: localStorage.getItem('kp_referrer') || document.referrer || '',
+      startedAt: new Date(kp_session_start).toISOString(),
+      endedAt: new Date().toISOString(),
+      pageviews: kp_pageviews
+    };
+    const base = (process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api');
+    const ensured = base.endsWith('/api') ? base : `${base.replace(/\/+$/, '')}/api`;
+    const url = ensured + '/analytics/session';
+    if (navigator.sendBeacon) {
+      const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+      navigator.sendBeacon(url, blob);
+    } else {
+      fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    }
+  } catch {}
+}
+
+// Fire-and-forget event tracking
+export function trackEvent(eventName, metadata = {}) {
+  try {
+    const payload = {
+      sessionId: localStorage.getItem('kp_session_id') || '',
+      eventName,
+      path: (typeof window !== 'undefined') ? (window.location.pathname + window.location.search + window.location.hash) : '',
+      timestamp: new Date().toISOString(),
+      metadata,
+      scrollPercent: kp_scroll_pct(),
+      timeSincePageLoadMs: Date.now() - kp_page_start
+    };
+    const base = (process.env.REACT_APP_API_URL || 'https://care-a6rj.onrender.com/api');
+    const ensured = base.endsWith('/api') ? base : `${base.replace(/\/+$/, '')}/api`;
+    const url = ensured + '/analytics/event';
+    if (navigator.sendBeacon) {
+      const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+      navigator.sendBeacon(url, blob);
+    } else {
+      fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(()=>{});
+    }
+  } catch {}
+}

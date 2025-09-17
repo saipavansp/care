@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import LinkedInStyleLogo from '../common/LinkedInStyleLogo';
+import { trackEvent } from '../../utils/attribution';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -95,7 +96,7 @@ const Header = () => {
               </Link>
             )}
 
-            <Link to="/book" className="btn-primary">
+            <Link to="/book" onClick={() => trackEvent('book_now_click', { source: 'header' })} className="btn-primary">
               Book Now
             </Link>
           </div>
