@@ -6,11 +6,14 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { trackEvent } from '../../utils/attribution';
 
-const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated }) => {
+const ReviewStep = ({ data, updateData, onPrevious, onSubmit, isSubmitting, isAuthenticated }) => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
   const [scrolledToEnd, setScrolledToEnd] = useState(true);
   const termsRef = useRef(null);
+  const [promoInput, setPromoInput] = useState((data.promoCode || '').toString());
+  const promoValid = (promoInput || '').trim().toUpperCase() === 'NCKLPRD';
+  const payableAfterPromo = Math.max(0, Number(data.totalAmount || 0) - (promoValid ? 200 : 0));
   
   const handleSubmit = () => {
     if (!termsAccepted) {
@@ -102,6 +105,32 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
               </div>
             )}
             
+            {/* Promo Code (optional) */}
+            <div className="bg-white/70 rounded-md p-3 border border-primary/20">
+              <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                <input
+                  type="text"
+                  value={promoInput}
+                  onChange={(e) => setPromoInput(e.target.value)}
+                  placeholder="Enter promo code (optional)"
+                  className="input-field flex-1"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent('promo_apply_click', { code: promoInput });
+                    updateData && updateData({ promoCode: promoInput.trim() });
+                  }}
+                  className={`px-4 py-2 rounded-lg font-medium ${promoValid ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+                >
+                  {promoValid ? 'Applied' : 'Apply'}
+                </button>
+              </div>
+              {promoValid && (
+                <p className="text-xs text-green-700 mt-1">Promo NCKLPRD detected. Estimated ₹200 off (first booking only). Final total will reflect after confirmation.</p>
+              )}
+            </div>
+
             <div className="border-t pt-3">
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-900">Total Amount</span>
@@ -111,10 +140,14 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
                       {formatCurrency(data.originalPrice)}
                     </div>
                   )}
-                  {data.promoCode && (
-                    <div className="text-xs text-green-700">Promo {data.promoCode.toUpperCase()} applied (₹200 off if eligible)</div>
+                  {promoValid ? (
+                    <div className="flex flex-col items-end">
+                      <div className="text-sm text-gray-500 line-through">{formatCurrency(data.totalAmount)}</div>
+                      <span className="text-xl font-bold text-primary">{formatCurrency(payableAfterPromo)}</span>
+                    </div>
+                  ) : (
+                    <span className="text-xl font-bold text-primary">{formatCurrency(data.totalAmount)}</span>
                   )}
-                  <span className="text-xl font-bold text-primary">{formatCurrency(data.totalAmount)}</span>
                 </div>
               </div>
             </div>

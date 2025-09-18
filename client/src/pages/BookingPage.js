@@ -146,6 +146,7 @@ const BookingPage = () => {
         return (
           <ReviewStep
             data={bookingData}
+            updateData={updateBookingData}
             onPrevious={handlePrevious}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
