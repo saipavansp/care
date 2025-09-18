@@ -31,6 +31,20 @@ function classifySource(utmSource, srcFlag, referrer) {
 export function initAttribution() {
   if (typeof window === 'undefined') return;
   try {
+    // Path-based source markers (nice short links like /wa)
+    const path = window.location.pathname || '';
+    const pathSourceMap = {
+      '/wa': 'whatsapp',
+      '/w': 'whatsapp',
+      '/whatsapp': 'whatsapp'
+    };
+    if (pathSourceMap[path]) {
+      localStorage.setItem('kp_source', 'whatsapp');
+      localStorage.setItem('kp_utm_source', 'whatsapp');
+      localStorage.setItem('kp_utm_medium', 'message');
+      // Clean the URL to homepage without reloading
+      try { if (window && window.history && window.history.replaceState) { window.history.replaceState({}, '', '/'); } } catch {}
+    }
     const utm_source = getParam(null, 'utm_source');
     const utm_medium = getParam(null, 'utm_medium');
     const utm_campaign = getParam(null, 'utm_campaign');
@@ -121,18 +135,20 @@ export function initSessionTracking() {
       if (p > kp_max_scroll) kp_max_scroll = p;
     }, { passive: true });
 
-    const _push = history.pushState;
-    history.pushState = function() {
-      // @ts-ignore
-      _push.apply(this, arguments);
-      kp_record_pageview();
-    };
-    const _replace = history.replaceState;
-    history.replaceState = function() {
-      // @ts-ignore
-      _replace.apply(this, arguments);
-      kp_record_pageview();
-    };
+    const _push = window.history && window.history.pushState ? window.history.pushState.bind(window.history) : null;
+    if (_push) {
+      window.history.pushState = function pushStateWrapper(...args) {
+        _push.apply(window.history, args);
+        kp_record_pageview();
+      };
+    }
+    const _replace = window.history && window.history.replaceState ? window.history.replaceState.bind(window.history) : null;
+    if (_replace) {
+      window.history.replaceState = function replaceStateWrapper(...args) {
+        _replace.apply(window.history, args);
+        kp_record_pageview();
+      };
+    }
     window.addEventListener('popstate', kp_record_pageview);
 
     window.addEventListener('beforeunload', sendSessionSummary, { capture: true });
