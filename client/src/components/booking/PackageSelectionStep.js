@@ -10,6 +10,8 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
   const [plans, setPlans] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlanId, setSelectedPlanId] = useState(data.packageId || 'single');
+  const [promoCode, setPromoCode] = useState(data.promoCode || '');
+  const computedDiscount = promoCode.trim().toUpperCase() === 'NCKLPRD' ? 200 : 0;
 
   useEffect(() => {
     fetchPricingPlans();
@@ -101,6 +103,8 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
   };
 
   const handleContinue = () => {
+    // Apply promo into booking data (discount calculation happens on backend as well)
+    updateData({ promoCode });
     trackEvent('booking_step_continue', { step: 'package_selection', selectedPlanId });
     onNext();
   };
@@ -212,8 +216,26 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
           <li>• Weekly and Monthly packages valid for 30 days from purchase</li>
           <li>• Free rescheduling with Weekly Care Package</li>
           <li>• Priority booking included with Monthly Complete Care Package</li>
-          <li>• All prices subject to 18% GST</li>
+          <li>• Apply promo NCKLPRD to get ₹200 off on first booking</li>
         </ul>
+      </div>
+
+      {/* Promo Code */}
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8">
+        <h4 className="font-medium text-gray-900 mb-2">Have a promo code?</h4>
+        <div className="flex gap-3 items-center">
+          <input
+            type="text"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+            placeholder="Enter promo (e.g., NCKLPRD)"
+            className="input-field flex-1"
+          />
+          {computedDiscount > 0 && (
+            <span className="text-green-700 font-medium">-₹{computedDiscount} (tentative)</span>
+          )}
+        </div>
+        <p className="text-xs text-gray-500 mt-1">Discount applies on first booking only. Final amount shown on confirmation.</p>
       </div>
 
       {/* Navigation */}

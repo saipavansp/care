@@ -23,6 +23,11 @@ const bookingSchema = new mongoose.Schema({
     ref: 'User',
     required: false
   },
+  contactEmail: {
+    type: String,
+    trim: true,
+    lowercase: true
+  },
   patientName: {
     type: String,
     required: true,
@@ -129,6 +134,15 @@ const bookingSchema = new mongoose.Schema({
   totalAmount: {
     type: Number,
     required: true,
+    min: 0
+  },
+  promoCode: {
+    type: String,
+    trim: true
+  },
+  discountAmount: {
+    type: Number,
+    default: 0,
     min: 0
   },
   paymentStatus: {

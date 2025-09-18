@@ -28,6 +28,31 @@ router.post('/create', [
     // Confirm booking immediately (no online payments for now)
     bookingData.status = 'confirmed';
 
+    // Promo handling: NCKLPRD flat 200 off for first booking for this contact (email/phone)
+    const inputCode = (req.body.promoCode || '').toString().trim().toUpperCase();
+    let discountAmount = 0;
+    if (inputCode === 'NCKLPRD') {
+      // Define a key to check first booking: prefer userId, else contactEmail, else phone if present in body
+      const contactEmail = (req.body.contactEmail || '').toString().trim().toLowerCase();
+      const phone = (req.body.phone || '').toString().trim();
+      const firstBookingQuery = {};
+      if (req.userId) firstBookingQuery.userId = req.userId;
+      else if (contactEmail) firstBookingQuery.contactEmail = contactEmail;
+      else if (phone) firstBookingQuery['userPhone'] = phone; // not stored currently; email is preferred
+
+      const priorCount = Object.keys(firstBookingQuery).length ? await Booking.countDocuments(firstBookingQuery) : 0;
+      if (priorCount === 0) {
+        discountAmount = 200;
+      }
+    }
+
+    if (discountAmount > 0) {
+      bookingData.promoCode = 'NCKLPRD';
+      bookingData.discountAmount = discountAmount;
+      const newTotal = Math.max(0, Number(req.body.totalAmount || 0) - discountAmount);
+      bookingData.totalAmount = newTotal;
+    }
+
     // Allow multiple bookings without same-day/time conflict checks (per requirement)
 
     const booking = new Booking(bookingData);
@@ -78,7 +103,8 @@ router.post('/create', [
         `Pickup Address: ${req.body.pickupAddress}`,
         req.body.package ? `Package: ${req.body.package}` : '',
         req.body.preferences ? `Preferences: ${JSON.stringify(req.body.preferences)}` : '',
-        `Total Amount: ${req.body.totalAmount}`,
+        bookingData.promoCode ? `Promo: ${bookingData.promoCode} (-₹${bookingData.discountAmount})` : '',
+        `Total Amount: ${bookingData.totalAmount}`,
         '',
         `Source: ${req.body.source || ''}`,
         `UTM Source: ${req.body.utm_source || ''}`,

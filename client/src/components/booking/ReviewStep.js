@@ -111,6 +111,9 @@ const ReviewStep = ({ data, onPrevious, onSubmit, isSubmitting, isAuthenticated 
                       {formatCurrency(data.originalPrice)}
                     </div>
                   )}
+                  {data.promoCode && (
+                    <div className="text-xs text-green-700">Promo {data.promoCode.toUpperCase()} applied (₹200 off if eligible)</div>
+                  )}
                   <span className="text-xl font-bold text-primary">{formatCurrency(data.totalAmount)}</span>
                 </div>
               </div>
