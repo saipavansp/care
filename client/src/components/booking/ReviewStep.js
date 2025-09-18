@@ -112,7 +112,7 @@ const ReviewStep = ({ data, updateData, onPrevious, onSubmit, isSubmitting, isAu
                   type="text"
                   value={promoInput}
                   onChange={(e) => setPromoInput(e.target.value)}
-                  placeholder="Enter promo code (optional)"
+                  placeholder="Enter promo (e.g., NCKLPRD) — optional"
                   className="input-field flex-1"
                 />
                 <button
@@ -126,9 +126,7 @@ const ReviewStep = ({ data, updateData, onPrevious, onSubmit, isSubmitting, isAu
                   {promoValid ? 'Applied' : 'Apply'}
                 </button>
               </div>
-              {promoValid && (
-                <p className="text-xs text-green-700 mt-1">Promo NCKLPRD detected. Estimated ₹200 off (first booking only). Final total will reflect after confirmation.</p>
-              )}
+              <p className="text-xs mt-1 ${promoValid ? 'text-green-700' : 'text-gray-600'}">Apply promo NCKLPRD to get ₹200 off on first booking. Exclusive for gated communities (shared internally).</p>
             </div>
 
             <div className="border-t pt-3">
