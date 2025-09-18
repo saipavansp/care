@@ -216,8 +216,6 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
           <li>• Weekly and Monthly packages valid for 30 days from purchase</li>
           <li>• Free rescheduling with Weekly Care Package</li>
           <li>• Priority booking included with Monthly Complete Care Package</li>
-          <li>• Apply promo NCKLPRD to get ₹200 off on first booking</li>
-          <li>• Exclusive promo for gated communities (shared internally)</li>
         </ul>
       </div>
 
@@ -229,7 +227,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
             type="text"
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value)}
-            placeholder="Enter promo (e.g., NCKLPRD) — optional"
+            placeholder="Enter promo (optional)"
             className="input-field flex-1"
           />
           {computedDiscount > 0 && (

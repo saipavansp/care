@@ -64,7 +64,7 @@ const PricingPage = () => {
           name: 'Monthly Complete Care Package',
           price: 4500,
           originalPrice: 6392,
-          visits: 8,
+          visits: 6,
           validity: '30 days from purchase',
           description: '8 hospital visits + priority scheduling',
           pricePerVisit: 562.50,
