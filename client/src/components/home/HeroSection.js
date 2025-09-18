@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiArrowRight, FiCheckCircle } from 'react-icons/fi';
+import { FiArrowRight, FiCheckCircle, FiPhone } from 'react-icons/fi';
 import { FaUserMd, FaHospital, FaHeartbeat } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
 import { trackEvent } from '../../utils/attribution';
@@ -55,6 +55,12 @@ const HeroSection = () => {
               <Link to="/how-it-works" className="btn-ghost inline-flex items-center justify-center">
                 Learn More
               </Link>
+              <a
+                href="tel:+919966255644"
+                className="bg-transparent border-2 border-primary text-primary px-5 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-200 inline-flex items-center justify-center"
+              >
+                <FiPhone className="mr-2" /> Call +91 9966255644
+              </a>
             </div>
 
             <div className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0">
