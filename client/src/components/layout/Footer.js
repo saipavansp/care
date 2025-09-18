@@ -57,11 +57,11 @@ const Footer = () => {
                 <span>+91 9966255644</span>
               </a>
               <a 
-                href="mailto:support@kinpin.in" 
+                href="mailto:contact@kinpin.in" 
                 className="flex items-center space-x-2 text-gray-400 hover:text-primary transition-colors"
               >
                 <FiMail className="w-4 h-4" />
-                <span>support@kinpin.in</span>
+                <span>contact@kinpin.in</span>
               </a>
               <div className="flex items-center space-x-2 text-gray-400">
                 <FiMapPin className="w-4 h-4" />

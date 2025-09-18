@@ -103,7 +103,7 @@ const TermsOfServicePage = () => {
             <section>
               <h2 className="text-xl font-semibold mb-2">14. Contact Information</h2>
               <p>For any queries, complaints, or disputes, you may contact us at:</p>
-              <p>📧 Email: support@kinpin.in</p>
+              <p>📧 Email: contact@kinpin.in</p>
             </section>
           </div>
         </div>
