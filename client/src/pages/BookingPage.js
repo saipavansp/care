@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiCheckCircle } from 'react-icons/fi';
+import { FiCheckCircle, FiPhone } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import BookingProgress from '../components/booking/BookingProgress';
@@ -177,6 +178,15 @@ const BookingPage = () => {
             <p className="text-sm text-orange-600 mt-2">
               No login required — you can book without creating an account.
             </p>
+            <div className="mt-3 flex flex-col sm:flex-row flex-wrap gap-2 items-center justify-center text-sm">
+              <span className="text-gray-500">Book service via:</span>
+              <a href="tel:+919966255644" className="inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700">
+                <FiPhone className="mr-2" /> +91 9966255644
+              </a>
+              <a href="https://wa.me/919966255644" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700">
+                <FaWhatsapp className="mr-2 text-green-600" /> WhatsApp
+              </a>
+            </div>
           </div>
 
           {/* Progress Bar */}

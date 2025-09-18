@@ -47,7 +47,7 @@ const HeroSection = () => {
               a shoulder to lean on, a voice you can trust.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center lg:justify-start mb-8">
               <Link to="/book" onClick={() => trackEvent('book_now_click', { source: 'hero' })} className="btn-primary inline-flex items-center justify-center group">
                 Book Your Companion
                 <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -57,7 +57,7 @@ const HeroSection = () => {
               </Link>
               <a
                 href="tel:+919966255644"
-                className="bg-transparent border-2 border-primary text-primary px-5 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-200 inline-flex items-center justify-center"
+                className="inline-flex items-center justify-center bg-transparent border-2 border-primary text-primary px-5 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-200"
               >
                 <FiPhone className="mr-2" /> Call +91 9966255644
               </a>
