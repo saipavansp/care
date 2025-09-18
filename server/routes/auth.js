@@ -324,9 +324,29 @@ router.post('/login', [
       return res.status(401).json({ message: 'Incorrect password' });
     }
 
+    // Capture first login (no previous lastLogin)
+    const isFirstLogin = !user.lastLogin;
     // Update last login
     user.lastLogin = new Date();
     await user.save();
+
+    // Notify ops on first-ever login (noise-controlled)
+    if (isFirstLogin) {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+          port: Number(process.env.EMAIL_PORT || 587),
+          secure: false,
+          auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+        });
+        const toOps = process.env.BOOKING_NOTIFY_TO || process.env.EMAIL_USER;
+        const from = process.env.EMAIL_FROM || process.env.EMAIL_USER;
+        const text = `First login detected for user\nName: ${user.name}\nPhone: ${user.phone}\nEmail: ${user.email || ''}`;
+        await transporter.sendMail({ from, to: toOps, subject: 'User First Login', text });
+      } catch (e) {
+        console.error('First login email error:', e?.message || e);
+      }
+    }
 
     // Generate token
     const token = generateToken(user._id);
