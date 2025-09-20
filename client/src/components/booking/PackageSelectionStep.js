@@ -243,10 +243,9 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
             className="input-field flex-1"
           />
           {computedDiscount > 0 && (
-            <span className="text-green-700 font-medium">-₹{computedDiscount} (tentative)</span>
+            <span className="text-green-700 font-medium">-₹{computedDiscount} (Applied)</span>
           )}
         </div>
-        <p className="text-xs text-gray-500 mt-1">Use promo NCKLPRD or GLDPM to get ₹200 off on first booking.</p>
       </div>
 
       {/* Navigation */}
