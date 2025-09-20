@@ -12,7 +12,8 @@ const ReviewStep = ({ data, updateData, onPrevious, onSubmit, isSubmitting, isAu
   const [scrolledToEnd, setScrolledToEnd] = useState(true);
   const termsRef = useRef(null);
   const [promoInput, setPromoInput] = useState((data.promoCode || '').toString());
-  const promoValid = (promoInput || '').trim().toUpperCase() === 'NCKLPRD';
+  const normalizedCode = (promoInput || '').trim().toUpperCase();
+  const promoValid = normalizedCode === 'NCKLPRD' || normalizedCode === 'GLDPM';
   const payableAfterPromo = Math.max(0, Number(data.totalAmount || 0) - (promoValid ? 200 : 0));
   
   const handleSubmit = () => {
@@ -112,7 +113,7 @@ const ReviewStep = ({ data, updateData, onPrevious, onSubmit, isSubmitting, isAu
                   type="text"
                   value={promoInput}
                   onChange={(e) => setPromoInput(e.target.value)}
-                  placeholder="Enter promo (e.g., NCKLPRD) — optional"
+                  placeholder="Enter promo (e.g., NCKLPRD or GLDPM) — optional"
                   className="input-field flex-1"
                 />
                 <button
@@ -126,7 +127,7 @@ const ReviewStep = ({ data, updateData, onPrevious, onSubmit, isSubmitting, isAu
                   {promoValid ? 'Applied' : 'Apply'}
                 </button>
               </div>
-              <p className="text-xs mt-1 ${promoValid ? 'text-green-700' : 'text-gray-600'}">Apply promo NCKLPRD to get ₹200 off on first booking. Exclusive for gated communities (shared internally).</p>
+              <p className="text-xs mt-1 ${promoValid ? 'text-green-700' : 'text-gray-600'}">Apply promo NCKLPRD or GLDPM to get ₹200 off on first booking. Exclusive for gated communities (shared internally).</p>
             </div>
 
             <div className="border-t pt-3">

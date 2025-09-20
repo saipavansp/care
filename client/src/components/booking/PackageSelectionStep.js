@@ -11,7 +11,8 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlanId, setSelectedPlanId] = useState(data.packageId || 'single');
   const [promoCode, setPromoCode] = useState(data.promoCode || '');
-  const computedDiscount = promoCode.trim().toUpperCase() === 'NCKLPRD' ? 200 : 0;
+  const normalizedCode = promoCode.trim().toUpperCase();
+  const computedDiscount = (normalizedCode === 'NCKLPRD' || normalizedCode === 'GLDPM') ? 200 : 0;
 
   useEffect(() => {
     fetchPricingPlans();
@@ -234,7 +235,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
             <span className="text-green-700 font-medium">-₹{computedDiscount} (tentative)</span>
           )}
         </div>
-        <p className="text-xs text-gray-500 mt-1">Discount applies on first booking only. Final amount shown on confirmation.</p>
+        <p className="text-xs text-gray-500 mt-1">Use promo NCKLPRD or GLDPM to get ₹200 off on first booking.</p>
       </div>
 
       {/* Navigation */}

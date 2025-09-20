@@ -28,10 +28,10 @@ router.post('/create', [
     // Confirm booking immediately (no online payments for now)
     bookingData.status = 'confirmed';
 
-    // Promo handling: NCKLPRD flat 200 off for first booking for this contact (email/phone)
+    // Promo handling: NCKLPRD or GLDPM flat 200 off for first booking for this contact (email/phone)
     const inputCode = (req.body.promoCode || '').toString().trim().toUpperCase();
     let discountAmount = 0;
-    if (inputCode === 'NCKLPRD') {
+    if (inputCode === 'NCKLPRD' || inputCode === 'GLDPM') {
       // Define a key to check first booking: prefer userId, else contactEmail, else phone if present in body
       const contactEmail = (req.body.contactEmail || '').toString().trim().toLowerCase();
       const phone = (req.body.phone || '').toString().trim();
@@ -47,7 +47,7 @@ router.post('/create', [
     }
 
     if (discountAmount > 0) {
-      bookingData.promoCode = 'NCKLPRD';
+      bookingData.promoCode = inputCode;
       bookingData.discountAmount = discountAmount;
       const newTotal = Math.max(0, Number(req.body.totalAmount || 0) - discountAmount);
       bookingData.totalAmount = newTotal;
