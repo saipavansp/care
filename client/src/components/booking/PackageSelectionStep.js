@@ -11,6 +11,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlanId, setSelectedPlanId] = useState(data.packageId || 'single');
   const [promoCode, setPromoCode] = useState(data.promoCode || '');
+  const [expandedPlans, setExpandedPlans] = useState({});
   const normalizedCode = promoCode.trim().toUpperCase();
   const computedDiscount = (normalizedCode === 'NCKLPRD' || normalizedCode === 'GLDPM') ? 200 : 0;
 
@@ -110,6 +111,10 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
     onNext();
   };
 
+  const toggleExpanded = (planId) => {
+    setExpandedPlans((prev) => ({ ...prev, [planId]: !prev[planId] }));
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
@@ -181,7 +186,7 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
             </div>
 
             <ul className="space-y-2 mb-4">
-              {plan.features.slice(0, 3).map((feature, idx) => (
+              {(expandedPlans[plan.id] ? plan.features : plan.features.slice(0, 3)).map((feature, idx) => (
                 <li key={idx} className="flex items-start">
                   <FiCheck className="text-green-500 mt-1 mr-2 flex-shrink-0" />
                   <span className="text-sm">{feature}</span>
@@ -189,7 +194,13 @@ const PackageSelectionStep = ({ data, updateData, onNext, onPrevious }) => {
               ))}
               {plan.features.length > 3 && (
                 <li className="text-sm text-gray-600 pl-5">
-                  +{plan.features.length - 3} more features
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); toggleExpanded(plan.id); }}
+                    className="text-primary hover:underline"
+                  >
+                    {expandedPlans[plan.id] ? 'Show fewer features' : `+${plan.features.length - 3} more features`}
+                  </button>
                 </li>
               )}
             </ul>
