@@ -1,96 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiCheck, FiTrendingUp } from 'react-icons/fi';
-import pricingService from '../services/pricing';
-import LoadingSpinner from '../components/common/LoadingSpinner';
 import { formatCurrency } from '../utils/helpers';
+import pricingPlans from '../data/pricingPlans';
 
 const PricingPage = () => {
-  const [plans, setPlans] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetchPricingPlans();
-  }, []);
-
-  const fetchPricingPlans = async () => {
-    try {
-      const response = await pricingService.getPricingPlans();
-      setPlans(response.plans);
-    } catch (error) {
-      console.error('Error fetching pricing plans:', error);
-      // Fallback pricing plans if API fails - using the same structure as in booking flow
-      setPlans([
-        {
-          id: 'single',
-          name: 'Single Visit Package',
-          price: 799,
-          originalPrice: 799, // No discount for single visit
-          visits: 1,
-          validity: 'One-time use',
-          description: 'One-time hospital visit assistance',
-          features: [
-            'Door-to-door companion service',
-            'In-clinic support & advocacy',
-            'Digital visit summary',
-            'Medicine reminders',
-            'Family updates via WhatsApp'
-          ],
-          popular: false,
-          savings: 0 // No savings for single visit
-        },
-        {
-          id: 'weekly',
-          name: 'Weekly Care Package',
-          price: 2800,
-          originalPrice: 3196,
-          visits: 4,
-          validity: '30 days from purchase',
-          description: '4 hospital visits within a month',
-          pricePerVisit: 700,
-          features: [
-            'All Single Visit features',
-            'Priority companion assignment',
-            'Dedicated care coordinator',
-            'Monthly health report',
-            'Free rescheduling'
-          ],
-          popular: true,
-          savings: 396
-        },
-        {
-          id: 'monthly',
-          name: 'Monthly Complete Care Package',
-          price: 4500,
-          originalPrice: 6392,
-          visits: 6,
-          validity: '30 days from purchase',
-          description: '8 hospital visits + priority scheduling',
-          pricePerVisit: 562.50,
-          features: [
-            'All Weekly Package features',
-            'Same companion preference',
-            'Priority booking included',
-            'Medicine delivery assistance',
-            'Emergency support helpline'
-          ],
-          popular: false,
-          savings: 1892
-        }
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="large" />
-      </div>
-    );
-  }
+  const plans = pricingPlans;
 
   return (
     <div className="min-h-screen bg-gray-50">
