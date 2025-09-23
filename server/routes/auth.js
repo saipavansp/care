@@ -314,7 +314,7 @@ router.post('/login', [
     // Find user
     const user = await User.findOne({ phone, isActive: true, role: 'user' });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid credentials. Please register.' });
     }
     // Allow login regardless of phone verification status
 
