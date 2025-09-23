@@ -1,12 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { FiArrowLeft, FiArrowRight, FiMapPin, FiHome, FiMap } from 'react-icons/fi';
+import { FiArrowLeft, FiArrowRight, FiMap } from 'react-icons/fi';
 import { trackEvent } from '../../utils/attribution';
 
 const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
-  const [useCurrentLocation, setUseCurrentLocation] = useState(false);
-  const [isGettingLocation, setIsGettingLocation] = useState(false);
+  // Google Places Autocomplete
+  const addressSearchRef = useRef(null);
+  const [placesReady, setPlacesReady] = useState(false);
+  const googleApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '';
+
+  const ensureGooglePlacesLoaded = () => {
+    if (window.google && window.google.maps && window.google.maps.places) {
+      return Promise.resolve();
+    }
+    if (!googleApiKey) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector('script[data-kp="gmaps"]');
+      if (existing) {
+        existing.addEventListener('load', resolve, { once: true });
+        existing.addEventListener('error', reject, { once: true });
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.dataset.kp = 'gmaps';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  };
   
   const {
     register,
@@ -36,48 +63,57 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
     'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu'
   ];
 
-  // Get user's current location
-  const getCurrentLocation = () => {
-    setIsGettingLocation(true);
-    
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          try {
-            const { latitude, longitude } = position.coords;
-            
-            // Here you would typically call a reverse geocoding API
-            // For demo purposes, we'll set a sample address
-            // In production, integrate with Google Maps Geocoding API
-            
-            setValue('addressLine1', 'Current Location');
-            setValue('city', 'Delhi');
-            setValue('state', 'Delhi');
-            setValue('pincode', '110001');
-            
-            // Store coordinates for later use
-            updateData({
-              pickupCoordinates: { latitude, longitude }
-            });
-            
-            setUseCurrentLocation(true);
-            setIsGettingLocation(false);
-          } catch (error) {
-            console.error('Error getting address:', error);
-            setIsGettingLocation(false);
-          }
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          setIsGettingLocation(false);
-          alert('Unable to get your location. Please enter address manually.');
+  // Initialize Google Places Autocomplete if available
+  useEffect(() => {
+    let destroyed = false;
+    (async () => {
+      try {
+        await ensureGooglePlacesLoaded();
+        if (destroyed) return;
+        if (window.google && window.google.maps && window.google.maps.places && addressSearchRef.current) {
+          setPlacesReady(true);
+          const autocomplete = new window.google.maps.places.Autocomplete(addressSearchRef.current, {
+            fields: ['address_components', 'formatted_address', 'geometry']
+          });
+
+          autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (!place || !place.address_components) return;
+
+            const get = (type) => {
+              const comp = place.address_components.find(c => c.types.includes(type));
+              return comp ? comp.long_name : '';
+            };
+
+            const streetNumber = get('street_number');
+            const route = get('route');
+            const sublocality = get('sublocality') || get('sublocality_level_1');
+            const locality = get('locality') || get('administrative_area_level_2');
+            const stateVal = get('administrative_area_level_1');
+            const postalCode = get('postal_code');
+
+            const line1 = [streetNumber, route].filter(Boolean).join(' ');
+            const line2 = sublocality || '';
+
+            setValue('addressLine1', line1 || place.formatted_address || '');
+            setValue('addressLine2', line2);
+            setValue('city', locality);
+            setValue('state', stateVal);
+            setValue('pincode', postalCode);
+
+            if (place.geometry?.location) {
+              const lat = place.geometry.location.lat();
+              const lng = place.geometry.location.lng();
+              updateData({ pickupCoordinates: { lat, lng } });
+            }
+          });
         }
-      );
-    } else {
-      alert('Geolocation is not supported by your browser');
-      setIsGettingLocation(false);
-    }
-  };
+      } catch (e) {
+        // Ignore script load errors; user can still type manually or use browser autofill
+      }
+    })();
+    return () => { destroyed = true; };
+  }, [setValue, updateData]);
 
   const onSubmit = (formData) => {
     // Combine all address fields into complete address
@@ -98,27 +134,7 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
     onNext();
   };
 
-  // Sample saved addresses (in production, fetch from user profile)
-  const savedAddresses = [
-    {
-      id: 1,
-      type: 'Home',
-      address: 'B-42, Vasant Kunj, New Delhi - 110070'
-    },
-    {
-      id: 2,
-      type: 'Office',
-      address: 'Tower A, Cyber City, Gurugram - 122002'
-    }
-  ];
-
-  const fillSavedAddress = (savedAddress) => {
-    // Parse the saved address (in production, store structured data)
-    setValue('addressLine1', savedAddress.address.split(',')[0]);
-    setValue('city', 'Delhi');
-    setValue('state', 'Delhi');
-    setValue('pincode', savedAddress.address.match(/\d{6}/)?.[0] || '');
-  };
+  // Removed preset Home/Office/Current Location buttons per requirement
 
   return (
     <motion.div
@@ -133,31 +149,20 @@ const PickupLocationStep = ({ data, updateData, onNext, onPrevious }) => {
         Enter the complete address where our companion should pick up the patient
       </p>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <button
-          type="button"
-          onClick={getCurrentLocation}
-          disabled={isGettingLocation}
-          className="flex items-center justify-center p-4 border-2 border-gray-300 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors"
-        >
-          <FiMapPin className="w-5 h-5 mr-2 text-primary" />
-          <span className="font-medium">
-            {isGettingLocation ? 'Getting location...' : 'Use Current Location'}
-          </span>
-        </button>
-        
-        {savedAddresses.map((saved) => (
-          <button
-            key={saved.id}
-            type="button"
-            onClick={() => fillSavedAddress(saved)}
-            className="flex items-center justify-center p-4 border-2 border-gray-300 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors"
-          >
-            <FiHome className="w-5 h-5 mr-2 text-primary" />
-            <span className="font-medium">Use {saved.type}</span>
-          </button>
-        ))}
+      {/* Google / Browser Saved Address Search */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Search address (Google)
+        </label>
+        <input
+          type="text"
+          ref={addressSearchRef}
+          className="input-field"
+          placeholder="Start typing your address to pick from suggestions"
+        />
+        {!placesReady && (
+          <p className="text-xs text-gray-500 mt-1">You can also use your browser's saved addresses via autofill.</p>
+        )}
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
