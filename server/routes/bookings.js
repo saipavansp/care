@@ -197,8 +197,14 @@ router.get('/user/:userId', auth, async (req, res) => {
     }
 
     const { status, page = 1, limit = 10 } = req.query;
-    const query = { userId: req.params.userId };
-    
+
+    // Include both authenticated-user bookings and any guest bookings linked by email
+    const orConditions = [{ userId: req.params.userId }];
+    if (req.user?.email) {
+      orConditions.push({ contactEmail: (req.user.email || '').toLowerCase() });
+    }
+
+    const query = { $or: orConditions };
     if (status) {
       query.status = status;
     }
@@ -235,11 +241,20 @@ router.get('/:bookingId', auth, async (req, res) => {
       return res.status(404).json({ message: 'Booking not found' });
     }
 
-    // Check authorization
-    if (booking.userId._id.toString() !== req.userId.toString() && 
-        req.user.role !== 'admin' && 
-        req.user.role !== 'companion') {
+    // Check authorization safely for both registered and guest bookings
+    const isAdmin = req.user.role === 'admin';
+    const isCompanion = req.user.role === 'companion';
+    const belongsToUser = booking.userId && booking.userId._id && (booking.userId._id.toString() === req.userId.toString());
+    const guestOwnedByEmail = !booking.userId && booking.contactEmail && req.user?.email && (booking.contactEmail.toLowerCase() === req.user.email.toLowerCase());
+
+    if (!(belongsToUser || isAdmin || isCompanion || guestOwnedByEmail)) {
       return res.status(403).json({ message: 'Access denied' });
+    }
+
+    // Optional: if this was a guest booking owned by the current user via email, link it now for future
+    if (!booking.userId && guestOwnedByEmail) {
+      booking.userId = req.userId;
+      await booking.save();
     }
 
     res.json({ booking });
